@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ include file="/WEB-INF/views/jspf/header-index.jspf" %>
 
 <div class="slogan container container--90">
@@ -13,7 +16,7 @@
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>13</em>
+            <em>${totalQuantity}</em>
 
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
@@ -21,7 +24,7 @@
         </div>
 
         <div class="stats--item">
-            <em>5</em>
+            <em>${donationCount}</em>
             <h3>Przekazanych darów</h3>
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
                 quam.</p>
@@ -79,29 +82,42 @@
             Możesz sprawdzić czym się zajmują.</p>
 
         <ul class="help--slides-items">
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja "Dbam o Zdrowie"</div>
-                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
-                </div>
+            <c:forEach items="${institutionPairs}" var="institutionPair">
+                <li>--%>
+                                        <div class="col">
+                                            <div class="title">${institutionPair.l.name}</div>
+                                            <div class="subtitle">${institutionPair.l.description}</div>
+                                        </div>
 
-                <div class="col">
-                    <div class="title">Fundacja "A kogo"</div>
-                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>
-                </div>
-            </li>
+                                        <div class="col">
+                                            <div class="title">${institutionPair.r.name}</div>
+                                            <div class="subtitle">${institutionPair.r.description}</div>
+                                        </div>
+                                    </li>
+            </c:forEach>
+<%--            <li>--%>
+<%--                <div class="col">--%>
+<%--                    <div class="title">Fundacja "Dbam o Zdrowie"</div>--%>
+<%--                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>--%>
+<%--                </div>--%>
 
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja “Dla dzieci"</div>
-                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
-                </div>
-                <div class="col">
-                    <div class="title">Fundacja “Bez domu”</div>
-                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
-                </div>
+<%--                <div class="col">--%>
+<%--                    <div class="title">Fundacja "A kogo"</div>--%>
+<%--                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>--%>
+<%--                </div>--%>
+<%--            </li>--%>
 
-            </li>
+<%--            <li>--%>
+<%--                <div class="col">--%>
+<%--                    <div class="title">Fundacja “Dla dzieci"</div>--%>
+<%--                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>--%>
+<%--                </div>--%>
+<%--                <div class="col">--%>
+<%--                    <div class="title">Fundacja “Bez domu”</div>--%>
+<%--                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>--%>
+<%--                </div>--%>
+
+<%--            </li>--%>
 
         </ul>
     </div>
