@@ -82,42 +82,34 @@
             Możesz sprawdzić czym się zajmują.</p>
 
         <ul class="help--slides-items">
-            <c:forEach items="${institutionPairs}" var="institutionPair">
-                <li>--%>
-                                        <div class="col">
-                                            <div class="title">${institutionPair.l.name}</div>
-                                            <div class="subtitle">${institutionPair.l.description}</div>
-                                        </div>
+<%--            <c:forEach items="${institutionPairs}" var="institutionPair">--%>
+<%--                <li>--%>
+<%--                                        <div class="col">--%>
+<%--                                            <div class="title">${institutionPair.l.name}</div>--%>
+<%--                                            <div class="subtitle">${institutionPair.l.description}</div>--%>
+<%--                                        </div>--%>
 
-                                        <div class="col">
-                                            <div class="title">${institutionPair.r.name}</div>
-                                            <div class="subtitle">${institutionPair.r.description}</div>
-                                        </div>
-                                    </li>
-            </c:forEach>
-<%--            <li>--%>
-<%--                <div class="col">--%>
-<%--                    <div class="title">Fundacja "Dbam o Zdrowie"</div>--%>
-<%--                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>--%>
-<%--                </div>--%>
+<%--                                        <div class="col">--%>
+<%--                                            <div class="title">${institutionPair.r.name}</div>--%>
+<%--                                            <div class="subtitle">${institutionPair.r.description}</div>--%>
+<%--                                        </div>--%>
+<%--                                    </li>--%>
+<%--            </c:forEach>--%>
 
-<%--                <div class="col">--%>
-<%--                    <div class="title">Fundacja "A kogo"</div>--%>
-<%--                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>--%>
-<%--                </div>--%>
-<%--            </li>--%>
+            <c:forEach items="${institutions}" var="institution" varStatus="loopStatus">
+                <c:if test="${loopStatus.count % 2 != 0}">
+                    <li>
+                </c:if>
+                    <div class="col">
+                        <div class="title">${institution.name}</div>
+                        <div class="subtitle">${institution.description}</div>
+                    </div>
+                <c:if test="${loopStatus.count % 2 == 0}">
+                    </li>
+                </c:if>
 
-<%--            <li>--%>
-<%--                <div class="col">--%>
-<%--                    <div class="title">Fundacja “Dla dzieci"</div>--%>
-<%--                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>--%>
-<%--                </div>--%>
-<%--                <div class="col">--%>
-<%--                    <div class="title">Fundacja “Bez domu”</div>--%>
-<%--                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>--%>
-<%--                </div>--%>
+                    </c:forEach>
 
-<%--            </li>--%>
 
         </ul>
     </div>

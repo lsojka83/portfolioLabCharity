@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ include file="/WEB-INF/views/jspf/header-form.jspf" %>
 
 <div class="slogan container container--90">

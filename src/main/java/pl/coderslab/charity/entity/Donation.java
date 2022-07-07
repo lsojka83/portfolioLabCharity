@@ -3,9 +3,7 @@ package pl.coderslab.charity.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -16,13 +14,14 @@ public class Donation {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @NotBlank
-    @Min(1)
+    @Min(1) //lub @Positive
     private int quantity;
-    @OneToMany
+    @ManyToMany
+    @NotEmpty
+//    @Size(min = 1)
     private List<Category> categories;
-    @OneToOne
+    @ManyToOne
+    @NotNull
     private Institution institution;
     @NotBlank
     private String street;

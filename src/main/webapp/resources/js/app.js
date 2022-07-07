@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  const donForm = document.getElementById("donForm");
+  const quantityOutput = document.getElementById("quantityOutput");
+  const institutionOut = document.getElementById("institutionOut");
+  const streetOut = document.getElementById("streetOut");
+  const cityOut = document.getElementById("cityOut");
+  const zipCodeOut = document.getElementById("zipCodeOut");
+  const phoneNumberOut = document.getElementById("phoneNumberOut");
+  const pickUpDateOut = document.getElementById("pickUpDateOut");
+  const pickUpTimeOut = document.getElementById("pickUpTimeOut");
+  const moreInfoOut = document.getElementById("moreInfoOut");
+
   /**
    * Form Select
    */
@@ -164,6 +175,33 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
       // TODO: get data from inputs and show them in summary
+      const array = [];
+      const checkboxes = donForm.elements.categories;
+      for (let i = 0; i < checkboxes.length; i++)
+      {
+        if(checkboxes[i].checked) {
+          array.push(checkboxes[i].labels[0].firstChild.nodeValue)
+        }
+      }
+
+      let selectedInstitution = null;
+      let institutions = donForm.elements.institution;
+      for (let i = 0; i < institutions.length; i++)
+      {
+        if(institutions[i].checked) {
+          selectedInstitution = institutions[i];
+        }
+      }
+      quantityOutput.innerHTML = donForm.elements.quantity.value + "x worek z categoriami:" + array;
+      // institutionOut.innerText = "Dla fundacji: "+donForm.elements.institution.options[institution.selectedIndex].text;
+      institutionOut.innerText = "Dla fundacji: "+ selectedInstitution.title;
+      streetOut.innerText = donForm.elements.street.value;
+      cityOut.innerText = donForm.elements.city.value;
+      zipCodeOut.innerText = donForm.elements.zipCode.value;
+      phoneNumberOut.innerText = donForm.elements.phoneNumber.value;
+      pickUpDateOut.innerText = donForm.elements.pickUpDate.value;
+      pickUpTimeOut.innerText = donForm.elements.pickUpTime.value;
+      moreInfoOut.innerText = donForm.elements.pickUpComment.value;
     }
 
   }

@@ -56,16 +56,40 @@
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
 <%--        <form action="form-confirmation.jsp" method="post">--%>
-        <form:form action="form-confirmation.jsp" method="post" modelAttribute="donation">
+        <form:form action="/form" method="post" modelAttribute="donation" id="donForm">
           <!-- STEP 1: class .active is switching steps -->
           <div data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
 
-            <form:checkboxes path="categories"
-                             itemLabel="name"
-                             items="${categories}"
-                             />
 
+            <c:forEach var="category" items="${categories}">
+              <div class="form-group form-group--checkbox">
+                <label>
+<%--                  <input--%>
+<%--                          type="checkbox"--%>
+<%--                          name="categories"--%>
+<%--                          value="clothes-to-use"--%>
+<%--                  />--%>
+                  <form:checkbox path="categories" value="${category}"/>
+
+                  <span class="checkbox"></span>
+                  <span class="description">
+                          ${category.name}
+                  </span>
+                </label>
+              </div>
+            </c:forEach>
+
+
+<%--            <form:checkboxes path="categories"--%>
+<%--                             itemValue="id"--%>
+<%--                             itemLabel="name"--%>
+<%--                             items="${categories}"--%>
+<%--                             element="span class='form-group form-group--checkbox'"--%>
+<%--            />--%>
+<%--            <form:errors path="categories"/>--%>
+
+              <%--                             cssClass="form-group form-group--checkbox"--%>
             <%--                             element="span class='form-group form-group--checkbox'"--%>
 
 
@@ -131,8 +155,10 @@
             <div class="form-group form-group--inline">
               <label>
                 Liczba 60l worków:
-                <form:input path="quantity"/>
-<%--                <input type="number" name="bags" step="1" min="1" />--%>
+                <form:input path="quantity" name="quantityInput"/>
+                <form:errors path="quantity"/>
+
+              <%--                <input type="number" name="bags" step="1" min="1" />--%>
               </label>
             </div>
 
@@ -148,8 +174,25 @@
           <div data-step="3">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
-            <form:select path="institution" itemLabel="name" items="${institutions}"/>
+<%--            <form:select path="institution" itemLabel="name" items="${institutions}" name="institution"/>--%>
 
+
+              <c:forEach var="institution" items="${institutions}">
+                  <div class="form-group form-group--checkbox">
+                      <label>
+<%--                          <input type="radio" name="organization" value="old" />--%>
+                <form:radiobutton path="institution" value="${institution}" title="${institution.name}" name="institution"/>
+                    <span class="checkbox radio"></span>
+                          <span class="description">
+                  <div class="title">${institution.name}</div>
+                  <div class="subtitle">
+                          ${institution.description}
+                  </div>
+                </span>
+                      </label>
+                  </div>
+              </c:forEach>
+              <form:errors path="institution"/>
 <%--            <div class="form-group form-group--checkbox">--%>
 <%--              <label>--%>
 <%--                <input type="radio" name="organization" value="old" />--%>
@@ -192,22 +235,30 @@
               <div class="form-section--column">
                 <h4>Adres odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Ulica   <form:input path="street" /> </label>
+                  <label> Ulica <form:input path="street" name="street"/>
+                    <form:errors path="street"/></label>
+
                 </div>
 
                 <div class="form-group form-group--inline">
-                  <label> Miasto  <form:input path="city"/> </label>
+                  <label> Miasto <form:input path="city" name="city"/>
+                    <form:errors path="city"/>
+                  </label>
+
+
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
-                    Kod pocztowy   <form:input path="zipCode" />
+                    Kod pocztowy   <form:input path="zipCode" name="zipCode"/>
+                    <form:errors path="zipCode"/>
                   </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
-                    Numer telefonu  <form:input path="phoneNumber" />
+                    Numer telefonu  <form:input path="phoneNumber" name="phoneNumber"/>
+                    <form:errors path="phoneNumber"/>
                   </label>
                 </div>
               </div>
@@ -215,18 +266,26 @@
               <div class="form-section--column">
                 <h4>Termin odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Data  <form:input type="date" path="pickUpDate"/> </label>
+                  <label> Data  <form:input type="date" path="pickUpDate" name="pickUpDate"/>
+                    <form:errors path="pickUpDate"/>
+                  </label>
+
+
                 </div>
 
                 <div class="form-group form-group--inline">
-                  <label> Godzina   <form:input type="time" path="pickUpTime" /> </label>
+                  <label> Godzina   <form:input type="time" path="pickUpTime" name="pickUpTime"/>
+                    <form:errors path="pickUpTime"/>
+                  </label>
+
+
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
                     Uwagi dla kuriera
-                    <form:textarea path="pickUpComment" name="more_info" rows="5"/>
-<%--                    <textarea name="more_info" rows="5"></textarea>--%>
+                    <form:textarea path="pickUpComment" name="moreInfo" rows="5"/>
+                  <%--                    <textarea name="more_info" rows="5"></textarea>--%>
                   </label>
                 </div>
               </div>
@@ -247,14 +306,14 @@
                 <ul>
                   <li>
                     <span class="icon icon-bag"></span>
-                    <span class="summary--text"
+                    <span class="summary--text" id="quantityOutput"
                       >4 worki ubrań w dobrym stanie dla dzieci</span
                     >
                   </li>
 
                   <li>
                     <span class="icon icon-hand"></span>
-                    <span class="summary--text"
+                    <span id="institutionOut" class="summary--text"
                       >Dla fundacji "Mam marzenie" w Warszawie</span
                     >
                   </li>
@@ -265,19 +324,19 @@
                 <div class="form-section--column">
                   <h4>Adres odbioru:</h4>
                   <ul>
-                    <li>Prosta 51</li>
-                    <li>Warszawa</li>
-                    <li>99-098</li>
-                    <li>123 456 789</li>
+                    <li id="streetOut">Prosta 51</li>
+                    <li id="cityOut">Warszawa</li>
+                    <li id="zipCodeOut">99-098</li>
+                    <li id="phoneNumberOut">123 456 789</li>
                   </ul>
                 </div>
 
                 <div class="form-section--column">
                   <h4>Termin odbioru:</h4>
                   <ul>
-                    <li>13/12/2018</li>
-                    <li>15:40</li>
-                    <li>Brak uwag</li>
+                    <li id="pickUpDateOut">13/12/2018</li>
+                    <li id="pickUpTimeOut">15:40</li>
+                    <li id="moreInfoOut">Brak uwag</li>
                   </ul>
                 </div>
               </div>
