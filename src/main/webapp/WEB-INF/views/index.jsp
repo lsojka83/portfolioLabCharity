@@ -81,21 +81,11 @@
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy.
             Możesz sprawdzić czym się zajmują.</p>
 
+        <form action="addinstitution" method="get">
+          <button type="submit">Add random instituiton</button>
+        </form>
+
         <ul class="help--slides-items">
-<%--            <c:forEach items="${institutionPairs}" var="institutionPair">--%>
-<%--                <li>--%>
-<%--                                        <div class="col">--%>
-<%--                                            <div class="title">${institutionPair.l.name}</div>--%>
-<%--                                            <div class="subtitle">${institutionPair.l.description}</div>--%>
-<%--                                        </div>--%>
-
-<%--                                        <div class="col">--%>
-<%--                                            <div class="title">${institutionPair.r.name}</div>--%>
-<%--                                            <div class="subtitle">${institutionPair.r.description}</div>--%>
-<%--                                        </div>--%>
-<%--                                    </li>--%>
-<%--            </c:forEach>--%>
-
             <c:forEach items="${institutions}" var="institution" varStatus="loopStatus">
                 <c:if test="${loopStatus.count % 2 != 0}">
                     <li>
@@ -107,12 +97,17 @@
                 <c:if test="${loopStatus.count % 2 == 0}">
                     </li>
                 </c:if>
-
-                    </c:forEach>
-
-
+            </c:forEach>
         </ul>
     </div>
+    <div class="help--slides-pagination">
+        <a href="/?institutionPageNumber=${previousPageNumber}#help"><< Previous&nbsp</a>
+        <c:forEach begin="1" end="${numberOfInstitutionPages}" varStatus="loopStatus">
+            <a href="/?institutionPageNumber=${loopStatus.count - 1}#help" title="">${loopStatus.count}&nbsp</a>
+        </c:forEach>
+        <a href="/?institutionPageNumber=${nextPageNumber}#help">Next >></a>
+    </div>
+
 
 </section>
 

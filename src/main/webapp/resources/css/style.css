@@ -1490,6 +1490,10 @@ header nav ul li:last-of-type {
 
 /* line 96, scss/modules/homepage-sections/_help.scss */
 .help--slides-pagination {
+  font-family: 'Merriweather', serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 3.0rem;
   margin-top: 40px;
   display: -webkit-box;
   display: -ms-flexbox;
