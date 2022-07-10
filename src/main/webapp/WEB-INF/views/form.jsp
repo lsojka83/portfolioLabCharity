@@ -55,23 +55,17 @@
       <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-<%--        <form action="form-confirmation.jsp" method="post">--%>
         <form:form action="/form" method="post" modelAttribute="donation" id="donForm">
           <!-- STEP 1: class .active is switching steps -->
           <div data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
 
-
             <c:forEach var="category" items="${categories}">
               <div class="form-group form-group--checkbox">
                 <label>
-<%--                  <input--%>
-<%--                          type="checkbox"--%>
-<%--                          name="categories"--%>
-<%--                          value="clothes-to-use"--%>
-<%--                  />--%>
-                  <form:checkbox path="categories" value="${category}"/>
-
+                    <%--form:checkbox IS NOT SHOW SELECTION - WHY??--%>
+                <%--<form:checkbox path="categories" value="${category}"/>--%>
+                  <input type="checkbox" name="categories" value="${category.id}" id=" ${category.name}"/>
                   <span class="checkbox"></span>
                   <span class="description">
                           ${category.name}
@@ -79,69 +73,19 @@
                 </label>
               </div>
             </c:forEach>
+            <div class="form-group form-group--checkbox">
+            <form:errors path="categories"/>
+             <span id="categories" class="e"></span>
+            </div>
 
-
-<%--            <form:checkboxes path="categories"--%>
+            <%--HOW TO SET CSS CLASS FOR  form:checkboxes??--%>
+<%--                      <form:checkboxes path="categories"--%>
 <%--                             itemValue="id"--%>
 <%--                             itemLabel="name"--%>
 <%--                             items="${categories}"--%>
 <%--                             element="span class='form-group form-group--checkbox'"--%>
 <%--            />--%>
 <%--            <form:errors path="categories"/>--%>
-
-              <%--                             cssClass="form-group form-group--checkbox"--%>
-            <%--                             element="span class='form-group form-group--checkbox'"--%>
-
-
-          <%--            <div class="form-group form-group--checkbox">--%>
-<%--              <label>--%>
-<%--                <input--%>
-<%--                  type="checkbox"--%>
-<%--                  name="categories"--%>
-<%--                  value="clothes-to-use"--%>
-<%--                />--%>
-<%--                <span class="checkbox"></span>--%>
-<%--                <span class="description"--%>
-<%--                  >ubrania, które nadają się do ponownego użycia</span--%>
-<%--                >--%>
-<%--              </label>--%>
-<%--            </div>--%>
-
-<%--            <div class="form-group form-group--checkbox">--%>
-<%--              <label>--%>
-<%--                <input--%>
-<%--                  type="checkbox"--%>
-<%--                  name="categories"--%>
-<%--                  value="clothes-useless"--%>
-<%--                />--%>
-<%--                <span class="checkbox"></span>--%>
-<%--                <span class="description">ubrania, do wyrzucenia</span>--%>
-<%--              </label>--%>
-<%--            </div>--%>
-
-<%--            <div class="form-group form-group--checkbox">--%>
-<%--              <label>--%>
-<%--                <input type="checkbox" name="categories" value="toys" />--%>
-<%--                <span class="checkbox"></span>--%>
-<%--                <span class="description">zabawki</span>--%>
-<%--              </label>--%>
-<%--            </div>--%>
-
-<%--            <div class="form-group form-group--checkbox">--%>
-<%--              <label>--%>
-<%--                <input type="checkbox" name="categories" value="books" />--%>
-<%--                <span class="checkbox"></span>--%>
-<%--                <span class="description">książki</span>--%>
-<%--              </label>--%>
-<%--            </div>--%>
-
-<%--            <div class="form-group form-group--checkbox">--%>
-<%--              <label>--%>
-<%--                <input type="checkbox" name="categories" value="other" />--%>
-<%--                <span class="checkbox"></span>--%>
-<%--                <span class="description">inne</span>--%>
-<%--              </label>--%>
-<%--            </div>--%>
 
             <div class="form-group form-group--buttons">
               <button type="button" class="btn next-step">Dalej</button>
@@ -155,9 +99,8 @@
             <div class="form-group form-group--inline">
               <label>
                 Liczba 60l worków:
-                <form:input path="quantity" name="quantityInput"/>
+                <form:input type="number" path="quantity" name="quantityInput"/>
                 <form:errors path="quantity"/>
-
               <%--                <input type="number" name="bags" step="1" min="1" />--%>
               </label>
             </div>
@@ -168,31 +111,43 @@
             </div>
           </div>
 
-
-
           <!-- STEP 4 -->
           <div data-step="3">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
-<%--            <form:select path="institution" itemLabel="name" items="${institutions}" name="institution"/>--%>
+                <%--DO NOT DELETE--%>
+                <%--Institution picker generated in JSP from backed--%>
 
+<%--              <c:forEach var="institution" items="${institutions}">--%>
+<%--                  <div class="form-group form-group--checkbox">--%>
+<%--                      <label>--%>
+<%--                <form:radiobutton path="institution" value="${institution}" title="${institution.name}" name="institution"/>--%>
+<%--                    <span class="checkbox radio"></span>--%>
+<%--                          <span class="description">--%>
+<%--                  <div class="title">${institution.name}</div>--%>
+<%--                  <div class="subtitle">--%>
+<%--                          ${institution.description}--%>
+<%--                  </div>--%>
+<%--                </span>--%>
+<%--                      </label>--%>
+<%--                  </div>--%>
+<%--              </c:forEach>--%>
+<%--            <div class="form-group form-group--checkbox">--%>
+<%--              <form:errors path="institution"/>--%>
+<%--            </div>--%>
+              <%--DO NOT DELETE--%>
 
-              <c:forEach var="institution" items="${institutions}">
-                  <div class="form-group form-group--checkbox">
-                      <label>
-<%--                          <input type="radio" name="organization" value="old" />--%>
-                <form:radiobutton path="institution" value="${institution}" title="${institution.name}" name="institution"/>
-                    <span class="checkbox radio"></span>
-                          <span class="description">
-                  <div class="title">${institution.name}</div>
-                  <div class="subtitle">
-                          ${institution.description}
-                  </div>
-                </span>
-                      </label>
-                  </div>
-              </c:forEach>
-              <form:errors path="institution"/>
+            <div id="institution-list">
+              <%--        here institution list will be added by JS         --%>
+            </div>
+
+                  <%--pagination--%>
+            <div id="pagination" class="help--slides-pagination">
+              <a href="" id="institutionPreviousPageLink"><< Previous&nbsp</a>
+                <%--       here pages links will be generated by JS       --%>
+              <a href="" id="institutionNextPageLink">Next >></a>
+            </div>
+            <form:errors path="institution"/>
 
 
             <div class="form-group form-group--buttons">
@@ -210,13 +165,13 @@
                 <h4>Adres odbioru</h4>
                 <div class="form-group form-group--inline">
                   <label> Ulica <form:input path="street" name="street"/>
-                    <form:errors path="street"/></label>
+                    <form:errors path="street" cssClass="error-message"/></label>
 
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label> Miasto <form:input path="city" name="city"/>
-                    <form:errors path="city"/>
+                    <form:errors path="city" cssClass="error-message"/>
                   </label>
 
 
@@ -225,14 +180,14 @@
                 <div class="form-group form-group--inline">
                   <label>
                     Kod pocztowy   <form:input path="zipCode" name="zipCode"/>
-                    <form:errors path="zipCode"/>
+                    <form:errors path="zipCode" cssClass="error-message"/>
                   </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
                     Numer telefonu  <form:input path="phoneNumber" name="phoneNumber"/>
-                    <form:errors path="phoneNumber"/>
+                    <form:errors path="phoneNumber" cssClass="error-message"/>
                   </label>
                 </div>
               </div>
@@ -241,7 +196,7 @@
                 <h4>Termin odbioru</h4>
                 <div class="form-group form-group--inline">
                   <label> Data  <form:input type="date" path="pickUpDate" name="pickUpDate"/>
-                    <form:errors path="pickUpDate"/>
+                    <form:errors path="pickUpDate" cssClass="error-message"/>
                   </label>
 
 
@@ -249,7 +204,7 @@
 
                 <div class="form-group form-group--inline">
                   <label> Godzina   <form:input type="time" path="pickUpTime" name="pickUpTime"/>
-                    <form:errors path="pickUpTime"/>
+                    <form:errors path="pickUpTime" cssClass="error-message"/>
                   </label>
 
 
@@ -281,14 +236,14 @@
                   <li>
                     <span class="icon icon-bag"></span>
                     <span class="summary--text" id="quantityOutput"
-                      >4 worki ubrań w dobrym stanie dla dzieci</span
+                      ></span
                     >
                   </li>
 
                   <li>
                     <span class="icon icon-hand"></span>
                     <span id="institutionOut" class="summary--text"
-                      >Dla fundacji "Mam marzenie" w Warszawie</span
+                      ></span
                     >
                   </li>
                 </ul>
@@ -298,18 +253,18 @@
                 <div class="form-section--column">
                   <h4>Adres odbioru:</h4>
                   <ul>
-                    <li id="streetOut">Prosta 51</li>
-                    <li id="cityOut">Warszawa</li>
-                    <li id="zipCodeOut">99-098</li>
-                    <li id="phoneNumberOut">123 456 789</li>
+                    <li id="streetOut"></li>
+                    <li id="cityOut"></li>
+                    <li id="zipCodeOut"></li>
+                    <li id="phoneNumberOut"></li>
                   </ul>
                 </div>
 
                 <div class="form-section--column">
                   <h4>Termin odbioru:</h4>
                   <ul>
-                    <li id="pickUpDateOut">13/12/2018</li>
-                    <li id="pickUpTimeOut">15:40</li>
+                    <li id="pickUpDateOut"></li>
+                    <li id="pickUpTimeOut"></li>
                     <li id="moreInfoOut">Brak uwag</li>
                   </ul>
                 </div>

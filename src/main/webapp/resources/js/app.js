@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", function() {
   const pickUpDateOut = document.getElementById("pickUpDateOut");
   const pickUpTimeOut = document.getElementById("pickUpTimeOut");
   const moreInfoOut = document.getElementById("moreInfoOut");
+  const institutionListDiv = document.getElementById("institution-list");
+
+  // const paginationDiv = document.getElementById("pagination");
+  const baseUrl = 'http://localhost:8080/institutions/';
+  let institutionCurrentPage = 0;
+
+  const institutionPreviousPageLink = document.getElementById('institutionPreviousPageLink');
+  const institutionNextPageLink = document.getElementById('institutionNextPageLink');
 
   /**
    * Form Select
@@ -136,8 +144,12 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$next.forEach(btn => {
         btn.addEventListener("click", e => {
           e.preventDefault();
+
+
           this.currentStep++;
           this.updateForm();
+
+
         });
       });
 
@@ -174,27 +186,32 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 5;
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
-      // TODO: get data from inputs and show them in summary
-      const array = [];
-      const checkboxes = donForm.elements.categories;
-      for (let i = 0; i < checkboxes.length; i++)
+      // Getting data from inputs and show them in summary
+      const selectedCategoryArray = [];
+      const categoryCheckboxes = donForm.elements.categories;
+      for (let i = 0; i < categoryCheckboxes.length; i++)
       {
-        if(checkboxes[i].checked) {
-          array.push(checkboxes[i].labels[0].firstChild.nodeValue)
+        if(categoryCheckboxes[i].checked) {
+          selectedCategoryArray.push(categoryCheckboxes[i].id)
         }
       }
 
       let selectedInstitution = null;
-      let institutions = donForm.elements.institution;
-      for (let i = 0; i < institutions.length; i++)
-      {
-        if(institutions[i].checked) {
-          selectedInstitution = institutions[i];
+      if(donForm.elements.institution!=null) {
+        let institutions = donForm.elements.institution;
+        for (let i = 0; i < institutions.length; i++) {
+          if (institutions[i].checked) {
+            selectedInstitution = institutions[i].title;
+            // console.log(selectedInstitution);
+          }
         }
       }
-      quantityOutput.innerHTML = donForm.elements.quantity.value + "x worek z categoriami:" + array;
+
+      quantityOutput.innerHTML = donForm.elements.quantity.value + "x worek z categoriami:" + selectedCategoryArray;
       // institutionOut.innerText = "Dla fundacji: "+donForm.elements.institution.options[institution.selectedIndex].text;
-      institutionOut.innerText = "Dla fundacji: "+ selectedInstitution.title;
+      if(selectedInstitution!=null) {
+        institutionOut.innerText = "Dla fundacji: " + selectedInstitution;
+      }
       streetOut.innerText = donForm.elements.street.value;
       cityOut.innerText = donForm.elements.city.value;
       zipCodeOut.innerText = donForm.elements.zipCode.value;
@@ -209,4 +226,139 @@ document.addEventListener("DOMContentLoaded", function() {
   if (form !== null) {
     new FormSteps(form);
   }
+
+
+  function createInstituitonDiv(institution)
+  {
+    const div = document.createElement("div");
+    div.className = "form-group form-group--checkbox";
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "institution";
+    input.title = institution.name;
+    input.value = institution.id;
+    label.appendChild(input);
+    const spanCheckbox = document.createElement("span");
+    spanCheckbox.className = "checkbox radio";
+    label.appendChild(spanCheckbox);
+    const spanDescription = document.createElement("span");
+    spanDescription.className = "description";
+    const divTitle = document.createElement("div");
+    divTitle.className = "title";
+    divTitle.innerHTML = institution.name;
+    spanDescription.appendChild(divTitle);
+    const divSubTitle = document.createElement("div");
+    divSubTitle.className = "subtitle";
+    divSubTitle.innerHTML = institution.description;
+    spanDescription.appendChild(divSubTitle);
+    label.appendChild(spanDescription);
+    div.appendChild(label);
+    return div;
+  }
+
+  const addInstitutionsToInstitutionListDiv = (institutions) =>
+  {
+    institutions.forEach((institution) =>{
+      const institutionDiv = createInstituitonDiv(institution);
+      institutionListDiv.appendChild(institutionDiv);
+    })
+  }
+
+  function getUrl(institutionPage)
+  {
+    return baseUrl+institutionPage;
+  }
+
+  const fetchInstitutionPage = (institutionPage)=>{
+    fetch(getUrl(institutionPage))
+        .then((response)=>
+        {
+          return response.json()
+        })
+        .then((institutions)=>
+        {
+          addInstitutionsToInstitutionListDiv(institutions);
+          // institutions.forEach((i)=>console.log(i))
+        })
+      }
+
+  fetchInstitutionPage(institutionCurrentPage);
+
+  // const institutionPagesLinksList = [];
+
+  function createPageLink(number)
+  {
+    const link = document.createElement("a");
+    link.href= "#";
+    link.id="institutionPageLink"+number;
+    link.title = number+1;
+    link.innerHTML = number+1+"&nbsp";
+    link.className="institutionPageLink";
+    if(institutionPreviousPageLink!=null) {
+      institutionPreviousPageLink.parentElement.insertBefore(link, institutionNextPageLink);
+    }
+    // institutionPagesLinksList[number] = link;
+    link.addEventListener("click", loadPageData);
+  }
+  let institutionPageCount = 0;
+
+  function getUrlForPageCount()
+  {
+    return baseUrl+"pages";
+  }
+  //add inst. page links
+  const fetchPageCount = ()=>{
+    fetch(getUrlForPageCount())
+        .then((response)=>
+        {
+          return response.json();
+        })
+        .then((response)=>
+        {
+          institutionPageCount = response;
+          addLinks();
+          institutionPreviousPageLink.addEventListener("click", previousPageLinkClinkHandler);
+          institutionNextPageLink.addEventListener("click", nextPageLinkClinkHandler)
+        })
+  }
+  fetchPageCount();
+
+  //add inst. page links
+  const addLinks = () => {
+    for (let i = 0; i < institutionPageCount; i++) {
+      createPageLink(i);
+    }
+  }
+  //handling inst. pagination link in form view
+  function previousPageLinkClinkHandler(event) {
+    event.preventDefault();
+    if(institutionCurrentPage > 0) {
+      institutionListDiv.innerHTML = "";
+      institutionCurrentPage--;
+      fetchInstitutionPage(institutionCurrentPage);
+    }
+    // console.log(institutionCurrentPage);
+  }
+
+  function nextPageLinkClinkHandler() {
+    event.preventDefault();
+    if(institutionCurrentPage < institutionPageCount-1) {
+      institutionListDiv.innerHTML = "";
+      institutionCurrentPage++;
+      fetchInstitutionPage(institutionCurrentPage);
+    }
+    // console.log(institutionCurrentPage);
+  }
+
+  function loadPageData(event)
+  {
+    event.preventDefault();
+    institutionListDiv.innerHTML = "";
+    fetchInstitutionPage(event.target.title-1);
+    institutionCurrentPage = event.target.title-1;
+    // console.log(institutionCurrentPage);
+  }
 });
+
+

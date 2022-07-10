@@ -14,14 +14,14 @@ public class Donation {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(1) //lub @Positive
+    @Positive
     private int quantity;
     @ManyToMany
-    @NotEmpty
+    @NotEmpty (message = "Należy zaznaczyć przynajmniej jedną kategorię!")
 //    @Size(min = 1)
     private List<Category> categories;
     @ManyToOne
-    @NotNull
+    @NotNull (message = "Należy zaznaczyć przynajmniej jedną instytucje!")
     private Institution institution;
     @NotBlank
     private String street;

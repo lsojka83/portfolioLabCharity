@@ -84,7 +84,7 @@
         <form action="addinstitution" method="get">
           <button type="submit">Add random instituiton</button>
         </form>
-
+        <%--institution list--%>
         <ul class="help--slides-items">
             <c:forEach items="${institutions}" var="institution" varStatus="loopStatus">
                 <c:if test="${loopStatus.count % 2 != 0}">
@@ -100,6 +100,8 @@
             </c:forEach>
         </ul>
     </div>
+
+    <%--pagination--%>
     <div class="help--slides-pagination">
         <a href="/?institutionPageNumber=${previousPageNumber}#help"><< Previous&nbsp</a>
         <c:forEach begin="1" end="${numberOfInstitutionPages}" varStatus="loopStatus">

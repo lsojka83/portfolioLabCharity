@@ -38,13 +38,12 @@ public class HomeController {
                              @RequestParam(required = false) Integer institutionPageNumber
 
     ) {
-
         // pagination handling code block - start
         int institutionPageSize = 10;
         if (institutionPageNumber == null) {
             model.addAttribute("previousPageNumber", 0);
             model.addAttribute("nextPageNumber", 1);
-            institutionPageNumber = 1;
+            institutionPageNumber = 0;
         }
 
         PageRequest pageRequest = PageRequest.of(institutionPageNumber, institutionPageSize);
