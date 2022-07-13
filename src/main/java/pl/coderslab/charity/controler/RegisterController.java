@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.model.Messages;
 import pl.coderslab.charity.repository.RoleRepository;
 import pl.coderslab.charity.repository.UserRepository;
 import pl.coderslab.charity.validate.PasswordValidator;
@@ -38,17 +39,16 @@ public class RegisterController {
     @PostMapping("/register")
     public String addUser(@Valid User user, BindingResult bindingResult, Model model)
     {
-//        if (!passwordValidator.isValid(user.getPassword(), null)) {
-//            model.addAttribute("invalidPassword", Messages.INVALID_PASSWORD);
-//        }
+        if (!passwordValidator.isValid(user.getPassword(), null)) {
+            model.addAttribute("invalidPassword", Messages.INVALID_PASSWORD);
+        }
         if (bindingResult.hasErrors()) {
             System.out.println("!!!!+form has errors");
             return "register";
         }
-//
-//        if (model.getAttribute("invalidPassword") != null) {
-//            return "register";
-//        }
+        if (model.getAttribute("invalidPassword") != null) {
+            return "register";
+        }
 
         user.setRole(roleRepository.findByRole("ROLE_USER"));
         userRepository.save(user);

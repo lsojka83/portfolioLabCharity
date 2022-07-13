@@ -64,8 +64,8 @@
               <div class="form-group form-group--checkbox">
                 <label>
                     <%--form:checkbox IS NOT SHOW SELECTION - WHY??--%>
-                <%--<form:checkbox path="categories" value="${category}"/>--%>
-                  <input type="checkbox" name="categories" value="${category.id}" id=" ${category.name}"/>
+                <form:checkbox path="categories" value="${category}"/>
+<%--                  <input type="checkbox" name="categories" value="${category.id}" id=" ${category.name}"/>--%>
                   <span class="checkbox"></span>
                   <span class="description">
                           ${category.name}
@@ -78,7 +78,7 @@
              <span id="categories" class="e"></span>
             </div>
 
-            <%--HOW TO SET CSS CLASS FOR  form:checkboxes??--%>
+            <%--HOW TO SET CSS CLASS FOR  form:checkboxes?? NO--%>
 <%--                      <form:checkboxes path="categories"--%>
 <%--                             itemValue="id"--%>
 <%--                             itemLabel="name"--%>
@@ -99,8 +99,7 @@
             <div class="form-group form-group--inline">
               <label>
                 Liczba 60l worków:
-                <form:input type="number" path="quantity" name="quantityInput"/>
-<%--                <input type="number" name="quantityInput" step="1" min="1" />--%>
+                <form:input type="number" path="quantity"/>
                 <form:errors path="quantity"/>
               <%--                <input type="number" name="bags" step="1" min="1" />--%>
               </label>
