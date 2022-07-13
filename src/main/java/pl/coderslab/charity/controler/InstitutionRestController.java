@@ -1,5 +1,6 @@
 package pl.coderslab.charity.controler;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,15 @@ public class InstitutionRestController {
     public List<Institution> getAllInstitutions()
     {
         return institutionRepository.findAll();
+    }
+
+    @GetMapping("/institutions/content")
+    public Page<Institution> getAllInstitutionsContent()
+    {
+        int institutionPageSize = 10;
+
+        PageRequest pageRequest = PageRequest.ofSize(institutionPageSize);
+        return institutionRepository.findAll(pageRequest);
     }
 
     @GetMapping("/institutions/{pageNumber}")

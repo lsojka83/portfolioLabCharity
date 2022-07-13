@@ -36,7 +36,7 @@ public class HomeController {
 
     ) {
         // pagination handling code block - start
-        int institutionPageSize = 10;
+        int institutionPageSize = 6;
         if (institutionPageNumber == null) {
             model.addAttribute("previousPageNumber", 0);
             model.addAttribute("nextPageNumber", 1);
@@ -45,19 +45,21 @@ public class HomeController {
 
         PageRequest pageRequest = PageRequest.of(institutionPageNumber, institutionPageSize);
         Page<Institution> page = institutionRepository.findAll(pageRequest);
-        int numberOfLastPage = page.getTotalPages();
-        model.addAttribute("numberOfInstitutionPages", numberOfLastPage);
-        model.addAttribute("institutions", page.getContent());
-        if (institutionPageNumber - 1 > 0) {
-            model.addAttribute("previousPageNumber", institutionPageNumber - 1);
-        } else {
-            model.addAttribute("previousPageNumber",0);
-        }
-        if (institutionPageNumber + 1 < numberOfLastPage) {
-            model.addAttribute("nextPageNumber", institutionPageNumber + 1);
-        } else {
-            model.addAttribute("nextPageNumber", numberOfLastPage-1);
-        }
+        model.addAttribute("page", page);
+        //Option 2
+//        int numberOfLastPage = page.getTotalPages();
+//        model.addAttribute("numberOfInstitutionPages", numberOfLastPage);
+//        model.addAttribute("institutions", page.getContent());
+//        if (institutionPageNumber - 1 > 0) {
+//            model.addAttribute("previousPageNumber", institutionPageNumber - 1);
+//        } else {
+//            model.addAttribute("previousPageNumber",0);
+//        }
+//        if (institutionPageNumber + 1 < numberOfLastPage) {
+//            model.addAttribute("nextPageNumber", institutionPageNumber + 1);
+//        } else {
+//            model.addAttribute("nextPageNumber", numberOfLastPage-1);
+//        }
         // pagination handling code block - end
 
         model.addAttribute("totalQuantity", donationRepository.getTotalQuantity().orElse(0));

@@ -86,14 +86,28 @@
         </form>
         <%--institution list--%>
         <ul class="help--slides-items">
-            <c:forEach items="${institutions}" var="institution" varStatus="loopStatus">
+        <%--Option 1--%>
+<%--            <c:forEach items="${institutions}" var="institution" varStatus="loopStatus">--%>
+<%--                <c:if test="${loopStatus.count % 2 != 0}">--%>
+<%--                    <li>--%>
+<%--                </c:if>--%>
+<%--                    <div class="col">--%>
+<%--                        <div class="title">${institution.name}</div>--%>
+<%--                        <div class="subtitle">${institution.description}</div>--%>
+<%--                    </div>--%>
+<%--                <c:if test="${loopStatus.count % 2 == 0}">--%>
+<%--                    </li>--%>
+<%--                </c:if>--%>
+<%--            </c:forEach>--%>
+            <%--Option 2--%>
+            <c:forEach items="${page.content}" var="institution" varStatus="loopStatus">
                 <c:if test="${loopStatus.count % 2 != 0}">
                     <li>
                 </c:if>
-                    <div class="col">
-                        <div class="title">${institution.name}</div>
-                        <div class="subtitle">${institution.description}</div>
-                    </div>
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
                 <c:if test="${loopStatus.count % 2 == 0}">
                     </li>
                 </c:if>
@@ -102,12 +116,33 @@
     </div>
 
     <%--pagination--%>
+
+        <%--Option 1    --%>
+<%--    <div class="help--slides-pagination">--%>
+<%--        <a href="/?institutionPageNumber=${previousPageNumber}#help"><< Previous&nbsp</a>--%>
+<%--        <c:forEach begin="1" end="${numberOfInstitutionPages}" varStatus="loopStatus">--%>
+<%--            <a href="/?institutionPageNumber=${loopStatus.count - 1}#help" title="">${loopStatus.count}&nbsp</a>--%>
+<%--        </c:forEach>--%>
+<%--        <a href="/?institutionPageNumber=${nextPageNumber}#help">Next >></a>--%>
+<%--    </div>--%>
+        <%--Option 2--%>
     <div class="help--slides-pagination">
-        <a href="/?institutionPageNumber=${previousPageNumber}#help"><< Previous&nbsp</a>
-        <c:forEach begin="1" end="${numberOfInstitutionPages}" varStatus="loopStatus">
+        <c:if test="${page.first == true}">
+            <a href="/?institutionPageNumber=${page.pageable.pageNumber}#help"><< Previous&nbsp</a>
+        </c:if>
+        <c:if test="${page.first == false}">
+            <a href="/?institutionPageNumber=${page.pageable.pageNumber-1}#help"><< Previous&nbsp</a>
+        </c:if>
+
+        <c:forEach begin="1" end="${page.totalPages}" varStatus="loopStatus">
             <a href="/?institutionPageNumber=${loopStatus.count - 1}#help" title="">${loopStatus.count}&nbsp</a>
         </c:forEach>
-        <a href="/?institutionPageNumber=${nextPageNumber}#help">Next >></a>
+        <c:if test="${page.last == true}">
+            <a href="/?institutionPageNumber=${page.pageable.pageNumber}#help">Next >></a>
+        </c:if>
+        <c:if test="${page.last == false}">
+            <a href="/?institutionPageNumber=${page.pageable.pageNumber+1}#help">Next >></a>
+        </c:if>
     </div>
 
 
