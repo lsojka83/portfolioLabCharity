@@ -1,10 +1,10 @@
 package pl.coderslab.charity.controler;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.entity.Institution;
@@ -12,10 +12,7 @@ import pl.coderslab.charity.repository.CategoryRepository;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.List;
+
 import java.util.Random;
 
 
@@ -47,9 +44,10 @@ public class HomeController {
         }
 
         PageRequest pageRequest = PageRequest.of(institutionPageNumber, institutionPageSize);
-        int numberOfLastPage = institutionRepository.findAll(pageRequest).getTotalPages();
+        Page<Institution> page = institutionRepository.findAll(pageRequest);
+        int numberOfLastPage = page.getTotalPages();
         model.addAttribute("numberOfInstitutionPages", numberOfLastPage);
-        model.addAttribute("institutions", institutionRepository.findAll(pageRequest).getContent());
+        model.addAttribute("institutions", page.getContent());
         if (institutionPageNumber - 1 > 0) {
             model.addAttribute("previousPageNumber", institutionPageNumber - 1);
         } else {
@@ -62,7 +60,7 @@ public class HomeController {
         }
         // pagination handling code block - end
 
-        model.addAttribute("totalQuantity", donationRepository.getTotalQuantity());
+        model.addAttribute("totalQuantity", donationRepository.getTotalQuantity().orElse(0));
         model.addAttribute("donationCount", donationRepository.count());
 
         return "index";
@@ -82,11 +80,4 @@ public class HomeController {
         int numberOfLastPage = institutionRepository.findAll(pageRequest).getTotalPages()-1;
         return "redirect:/?institutionPageNumber="+numberOfLastPage+"#help";
     }
-
-//    @ModelAttribute("institutions")
-//    public List<Institution> getAllInstitutions() {
-//        return institutionRepository.findAll();
-//    }
-
-
 }

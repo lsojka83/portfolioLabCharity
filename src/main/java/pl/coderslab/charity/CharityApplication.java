@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import pl.coderslab.charity.converter.CategoryConverter;
+import pl.coderslab.charity.validate.PasswordValidator;
 
 @SpringBootApplication
 public class CharityApplication {
@@ -13,10 +14,11 @@ public class CharityApplication {
         SpringApplication.run(CharityApplication.class, args);
     }
 
-//    @Bean
-//    public Converter categoryConverter()
-//    {
-//        return new CategoryConverter();
-//    }
+    @Bean
+    public PasswordValidator passwordValidator()
+    {
+        return new PasswordValidator();
+    }
+
 
 }

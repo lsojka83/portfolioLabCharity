@@ -32,6 +32,7 @@ public class Donation {
     @NotBlank
     private String phoneNumber;
     @NotNull
+    @Future
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate pickUpDate;
     @NotNull

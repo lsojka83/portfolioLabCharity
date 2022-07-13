@@ -208,7 +208,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       quantityOutput.innerHTML = donForm.elements.quantity.value + "x worek z categoriami:" + selectedCategoryArray;
-      // institutionOut.innerText = "Dla fundacji: "+donForm.elements.institution.options[institution.selectedIndex].text;
       if(selectedInstitution!=null) {
         institutionOut.innerText = "Dla fundacji: " + selectedInstitution;
       }

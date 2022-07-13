@@ -100,6 +100,7 @@
               <label>
                 Liczba 60l worków:
                 <form:input type="number" path="quantity" name="quantityInput"/>
+<%--                <input type="number" name="quantityInput" step="1" min="1" />--%>
                 <form:errors path="quantity"/>
               <%--                <input type="number" name="bags" step="1" min="1" />--%>
               </label>
