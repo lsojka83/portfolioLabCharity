@@ -36,6 +36,9 @@
         <div class="form-group">
           <form:input path="password" type="password" name="password" placeholder="Hasło" />
           <form:errors path="password"/>
+          <c:if test="${not empty invalidPassword}">
+            ${invalidPassword}
+          </c:if>
 
         </div>
         <div class="form-group">
