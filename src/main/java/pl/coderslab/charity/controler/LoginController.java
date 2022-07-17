@@ -2,23 +2,17 @@ package pl.coderslab.charity.controler;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/login")
 public class LoginController {
 
-    @GetMapping("/login")
-    public String showLoginPage()
+    @GetMapping("")
+    public String login()
     {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String validateCredentials(@RequestParam String email,
-                                      @RequestParam String password)
-    {
-        return "login";
-    }
 
 }

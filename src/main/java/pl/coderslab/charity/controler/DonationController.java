@@ -4,10 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
@@ -20,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Controller
+@RequestMapping("/form")
 public class DonationController {
 
     private final InstitutionRepository institutionRepository;
@@ -32,7 +30,7 @@ public class DonationController {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping("/form")
+    @GetMapping("")
     public String getForm(Model model,
                           @RequestParam(required = false) Integer institutionPageNumber
     )
@@ -43,7 +41,7 @@ public class DonationController {
         return "form";
     }
 
-    @PostMapping("/form")
+    @PostMapping("")
     public String saveFormData(@Valid Donation donation,
                              BindingResult bindingResult,
                                Model model,

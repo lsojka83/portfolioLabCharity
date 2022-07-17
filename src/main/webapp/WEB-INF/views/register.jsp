@@ -4,27 +4,29 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<!DOCTYPE html>
-<html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-    <link rel="stylesheet" href="<c:url value="resources/css/style.css"/>"/>
-  </head>
-  <body>
-    <header>
-      <nav class="container container--70">
-        <ul class="nav--actions">
-          <li><a href="/login">Zaloguj</a></li>
-          <li class="highlighted"><a href="/register">Załóż konto</a></li>
-        </ul>
+<%--<!DOCTYPE html>--%>
+<%--<html lang="pl">--%>
+<%--  <head>--%>
+<%--    <meta charset="UTF-8" />--%>
+<%--    <meta name="viewport" content="width=device-width, initial-scale=1.0" />--%>
+<%--    <meta http-equiv="X-UA-Compatible" content="ie=edge" />--%>
+<%--    <title>Document</title>--%>
+<%--    <link rel="stylesheet" href="<c:url value="resources/css/style.css"/>"/>--%>
+<%--  </head>--%>
+<%--  <body>--%>
+<%--    <header>--%>
+<%--      <nav class="container container--70">--%>
+<%--        <ul class="nav--actions">--%>
+<%--          <li><a href="/login">Zaloguj</a></li>--%>
+<%--          <li class="highlighted"><a href="/register">Załóż konto</a></li>--%>
+<%--        </ul>--%>
 
-        <%@ include file="/WEB-INF/views/jspf/header-topbar-links.jspf" %>
+<%--        <%@ include file="/WEB-INF/views/jspf/header-topbar-links.jspf" %>--%>
 
-      </nav>
-    </header>
+<%--      </nav>--%>
+<%--    </header>--%>
+<%@ include file="/WEB-INF/views/jspf/header-login_register.jspf" %>
+
 
     <section class="login-page">
       <h2>Załóż konto</h2>

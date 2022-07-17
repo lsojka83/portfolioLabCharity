@@ -14,7 +14,7 @@ public class Role {
     private Long id;
     @NotNull
     @NotBlank
-    private String role; //ROLE_USER, ROLE_ADMIN
+    private String name; //ROLE_USER, ROLE_ADMIN
 
     public Role() {
     }
@@ -23,11 +23,13 @@ public class Role {
         return id;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
+
+
 }

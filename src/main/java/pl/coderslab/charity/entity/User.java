@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -17,17 +18,26 @@ public class User {
     @Size(max = 100)
     private String lastName;
     @Email
-    @Column(unique=true)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
     @NotBlank
     private String password;
-    @ManyToOne
-    private Role role;
+    private int enabled;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
     @OneToMany
     private List<Donation> donations;
 
 
     public User() {
+    }
+
+    public User(String email, String password, Set<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -70,12 +80,20 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public int getEnabled() {
+        return enabled;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public List<Donation> getDonations() {

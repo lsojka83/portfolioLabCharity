@@ -2,39 +2,45 @@ package pl.coderslab.charity.controler;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.entity.Institution;
+import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.model.CurrentUser;
 import pl.coderslab.charity.repository.CategoryRepository;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
+import pl.coderslab.charity.service.UserService;
 
 
 import java.util.Random;
 
-
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
     private final InstitutionRepository institutionRepository;
     private final DonationRepository donationRepository;
     private final CategoryRepository categoryRepository;
+    private final UserService userService;
 
-    public HomeController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository) {
+    public HomeController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserService userService) {
         this.institutionRepository = institutionRepository;
         this.donationRepository = donationRepository;
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
     }
 
 
-    @RequestMapping("/")
+    @RequestMapping("")
     public String homeAction(Model model,
-                             @RequestParam(required = false) Integer institutionPageNumber
+                             @RequestParam(required = false) Integer institutionPageNumber,
+                             @AuthenticationPrincipal CurrentUser customUser
 
-    ) {
+                             ) {
         // pagination handling code block - start
         int institutionPageSize = 6;
         if (institutionPageNumber == null) {
@@ -46,6 +52,7 @@ public class HomeController {
         PageRequest pageRequest = PageRequest.of(institutionPageNumber, institutionPageSize);
         Page<Institution> page = institutionRepository.findAll(pageRequest);
         model.addAttribute("page", page);
+        model.addAttribute("user",customUser);
         //Option 2
 //        int numberOfLastPage = page.getTotalPages();
 //        model.addAttribute("numberOfInstitutionPages", numberOfLastPage);
@@ -69,7 +76,7 @@ public class HomeController {
     }
 
 
-    @GetMapping("/addinstitution")
+    @GetMapping("addinstitution")
     public String addInstitution() {
         Institution institution = new Institution();
         String iName = "Fundation " + (new Random(System.currentTimeMillis())).nextInt(1000);
@@ -80,6 +87,7 @@ public class HomeController {
         int institutionPageSize = 10;
         PageRequest pageRequest = PageRequest.ofSize(institutionPageSize);
         int numberOfLastPage = institutionRepository.findAll(pageRequest).getTotalPages()-1;
-        return "redirect:/?institutionPageNumber="+numberOfLastPage+"#help";
+        return "redirect:?institutionPageNumber="+numberOfLastPage+"#help";
     }
+
 }
