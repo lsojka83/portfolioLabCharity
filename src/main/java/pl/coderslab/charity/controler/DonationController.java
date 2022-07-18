@@ -1,19 +1,20 @@
 package pl.coderslab.charity.controler;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.Institution;
+import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.model.CurrentUser;
 import pl.coderslab.charity.repository.CategoryRepository;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
+import pl.coderslab.charity.repository.UserRepository;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -23,77 +24,58 @@ public class DonationController {
     private final InstitutionRepository institutionRepository;
     private final DonationRepository donationRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
-    public DonationController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository) {
+
+    public DonationController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
         this.institutionRepository = institutionRepository;
         this.donationRepository = donationRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("")
     public String getForm(Model model,
-                          @RequestParam(required = false) Integer institutionPageNumber
-    )
-    {
-        model = paginationSetup(model, institutionPageNumber);
-        model.addAttribute("donation", new Donation());
+                          @RequestParam(required = false) Integer institutionPageNumber,
+                          @AuthenticationPrincipal CurrentUser customUser
+
+                          ) {
+
+        Donation donation = new Donation();
+        User user = customUser.getUser();
+        donation.setStreet(user.getStreet());
+        donation.setCity(user.getCity());
+        donation.setZipCode(user.getZipCode());
+        donation.setPhoneNumber(user.getPhoneNumber());
+        model.addAttribute("donation",donation);
 
         return "form";
     }
 
     @PostMapping("")
     public String saveFormData(@Valid Donation donation,
-                             BindingResult bindingResult,
+                               BindingResult bindingResult,
+                               @AuthenticationPrincipal CurrentUser customUser,
                                Model model,
                                @RequestParam(required = false) Integer institutionPageNumber
-    )
-    {
-        model = paginationSetup(model, institutionPageNumber);
-
-        if(bindingResult.hasErrors())
-        {
-//            model.addAttribute("categories", categoryRepository.findAll());
-//            model.addAttribute("institutions", institutionRepository.findAll());
+    ) {
+        if (bindingResult.hasErrors()) {
             return "form";
         }
         donationRepository.save(donation);
+        User user = userRepository.findByEmail(customUser.getUser().getEmail());
+        user.getDonations().add(donation);
+        userRepository.save(user);
+
         return "form-confirmation";
     }
 
-    private Model paginationSetup(Model model,Integer institutionPageNumber)
-    {
-        // pagination handling code block - start
-        int institutionPageSize = 10;
-        if (institutionPageNumber == null) {
-            model.addAttribute("previousPageNumber", 0);
-            model.addAttribute("nextPageNumber", 1);
-            institutionPageNumber = 0;
-        }
-
-        PageRequest pageRequest = PageRequest.of(institutionPageNumber, institutionPageSize);
-        int numberOfLastPage = institutionRepository.findAll(pageRequest).getTotalPages();
-        model.addAttribute("numberOfInstitutionPages", numberOfLastPage);
-        model.addAttribute("institutions", institutionRepository.findAll(pageRequest).getContent());
-        if (institutionPageNumber - 1 > 0) {
-            model.addAttribute("previousPageNumber", institutionPageNumber - 1);
-        } else {
-            model.addAttribute("previousPageNumber",0);
-        }
-        if (institutionPageNumber + 1 < numberOfLastPage) {
-            model.addAttribute("nextPageNumber", institutionPageNumber + 1);
-        } else {
-            model.addAttribute("nextPageNumber", numberOfLastPage-1);
-        }
-        // pagination handling code block - end
-
-        return model;
-    }
-
     @ModelAttribute("categories")
-    public List<Category> categories()
-    {
+    public List<Category> categories() {
         return categoryRepository.findAll();
     }
+
+
 
 
 }

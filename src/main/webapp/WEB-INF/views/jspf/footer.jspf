@@ -14,14 +14,13 @@
         </form>
     </div>
     <div class="bottom-line">
-        <span class="bottom-line--copy">Copyright &copy; 2018</span>
+        <span class="bottom-line--copy">Copyright &copy; 2022</span>
         <div class="bottom-line--icons">
             <a href="#" class="btn btn--small">
                 <img src="<c:url value="resources/images/icon-facebook.svg"/>"/>
             </a>
 
-            <a href="#"
-                                                                                            class="btn btn--small">
+            <a href="#" class="btn btn--small">
             <img src="<c:url value="resources/images/icon-instagram.svg"/>"/>
          </a>
         </div>
@@ -29,5 +28,27 @@
 </footer>
 
 <script src="<c:url value="/resources/js/app.js"/>" defer></script>
+
+<!-- Bootstrap core JavaScript-->
+<script src="<c:url value="/resources/theme/vendor/jquery/jquery.min.js"/>" defer></script>
+<script src="<c:url value="/resources/theme/vendor/bootstrap/js/bootstrap.bundle.min.js"/>" defer></script>
+
+
+<!-- Core plugin JavaScript-->
+<script src="<c:url value="/resources/theme/vendor/jquery-easing/jquery.easing.min.js"/>" defer></script>
+
+
+<!-- Custom scripts for all pages-->
+<script src="<c:url value="/resources/theme/js/sb-admin-2.min.js"/>" defer></script>
+
+
+<!-- Page level plugins -->
+<script src="<c:url value="/resources/theme/vendor/datatables/jquery.dataTables.min.js"/>" defer></script>
+<script src="<c:url value="/resources/theme/vendor/datatables/dataTables.bootstrap4.min.js"/>" defer></script>
+
+<!-- Page level custom scripts -->
+<script src="<c:url value="/resources/theme/js/demo/datatables-demo.js"/>" defer></script>
+
+
 </body>
 </html>

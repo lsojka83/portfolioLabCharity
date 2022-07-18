@@ -164,7 +164,7 @@
               <div class="form-section--column">
                 <h4>Adres odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Ulica <form:input path="street" name="street"/>
+                  <label> Ulica <form:input path="street" name="street" />
                     <form:errors path="street" cssClass="error-message"/></label>
 
                 </div>

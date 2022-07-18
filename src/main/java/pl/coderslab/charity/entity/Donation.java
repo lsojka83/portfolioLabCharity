@@ -16,11 +16,11 @@ public class Donation {
     private Long id;
     @Positive
     private int quantity;
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER)
     @NotEmpty (message = "Należy zaznaczyć przynajmniej jedną kategorię!")
 //    @Size(min = 1)
     private List<Category> categories;
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.EAGER)
     @NotNull (message = "Należy zaznaczyć przynajmniej jedną instytucje!")
     private Institution institution;
     @NotBlank

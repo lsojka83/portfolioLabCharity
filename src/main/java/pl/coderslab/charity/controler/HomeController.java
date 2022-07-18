@@ -52,7 +52,18 @@ public class HomeController {
         PageRequest pageRequest = PageRequest.of(institutionPageNumber, institutionPageSize);
         Page<Institution> page = institutionRepository.findAll(pageRequest);
         model.addAttribute("page", page);
-        model.addAttribute("user",customUser);
+        if(customUser != null) {
+//            model.addAttribute("user", customUser);
+            model.addAttribute("totalQuantity", customUser.getUser().getDonations().stream()
+                    .map(d -> d.getQuantity())
+                    .reduce(Integer::sum).orElse(0)
+            );
+            model.addAttribute("donationCount", customUser.getUser().getDonations().size());
+        }
+        else {
+            model.addAttribute("totalQuantity", donationRepository.getTotalQuantity().orElse(0));
+            model.addAttribute("donationCount", donationRepository.count());
+        }
         //Option 2
 //        int numberOfLastPage = page.getTotalPages();
 //        model.addAttribute("numberOfInstitutionPages", numberOfLastPage);
@@ -69,8 +80,7 @@ public class HomeController {
 //        }
         // pagination handling code block - end
 
-        model.addAttribute("totalQuantity", donationRepository.getTotalQuantity().orElse(0));
-        model.addAttribute("donationCount", donationRepository.count());
+
 
         return "index";
     }

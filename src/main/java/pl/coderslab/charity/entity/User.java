@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
@@ -23,11 +25,17 @@ public class User {
     @NotBlank
     private String password;
     private int enabled;
+    private String street;
+    private String city;
+    private String zipCode;
+    private String phoneNumber;
+
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Donation> donations;
 
 
@@ -102,5 +110,37 @@ public class User {
 
     public void setDonations(List<Donation> donations) {
         this.donations = donations;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

@@ -25,7 +25,7 @@
 
 <%--      </nav>--%>
 <%--    </header>--%>
-<%@ include file="/WEB-INF/views/jspf/header-login_register.jspf" %>
+<%@ include file="/WEB-INF/views/jspf/header-login-register.jspf" %>
 
 
     <section class="login-page">

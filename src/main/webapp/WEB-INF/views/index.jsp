@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ include file="/WEB-INF/views/jspf/header-index.jspf" %>
 
@@ -16,7 +17,9 @@
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>${totalQuantity}</em>
+            <em>
+                    ${totalQuantity}
+            </em>
 
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
@@ -24,7 +27,9 @@
         </div>
 
         <div class="stats--item">
-            <em>${donationCount}</em>
+            <em>
+                ${donationCount}
+            </em>
             <h3>Przekazanych darów</h3>
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
                 quam.</p>
