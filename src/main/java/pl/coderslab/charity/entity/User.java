@@ -20,6 +20,7 @@ public class User {
     @Size(max = 100)
     private String lastName;
     @Email
+    @NotBlank
     @Column(nullable = false, unique = true, length = 100)
     private String email;
     @NotBlank
@@ -29,14 +30,12 @@ public class User {
     private String city;
     private String zipCode;
     private String phoneNumber;
-
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Donation> donations;
+    @OneToMany (cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Donation> donations;
 
 
     public User() {
@@ -104,11 +103,11 @@ public class User {
         this.roles = roles;
     }
 
-    public List<Donation> getDonations() {
+    public Set<Donation> getDonations() {
         return donations;
     }
 
-    public void setDonations(List<Donation> donations) {
+    public void setDonations(Set<Donation> donations) {
         this.donations = donations;
     }
 
@@ -143,4 +142,6 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
 }

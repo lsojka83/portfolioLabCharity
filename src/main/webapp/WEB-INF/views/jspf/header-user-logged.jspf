@@ -33,6 +33,6 @@
     <nav class="container container--70">
         <%@ include file="/WEB-INF/views/jspf/header-topbar-user-data.jspf" %>
 
-        <%@ include file="/WEB-INF/views/jspf/header-topbar-links.jspf" %>
+        <%@ include file="/WEB-INF/views/jspf/header-index-topbar-links.jspf" %>
     </nav>
 </header>

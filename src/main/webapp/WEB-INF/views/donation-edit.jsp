@@ -9,19 +9,23 @@
 
     <section class="login-page">
       <h2>Edytuj dane</h2>
-      <form:form action="/user/edit" method="post" modelAttribute="user">
+      <form:form action="/user/donation" method="post" modelAttribute="donation">
         <div class="form-group">
-          <form:input path="email" type="email" name="email" placeholder="Email"  />
-          <form:errors path="email"/>
+          <form:input path="quantity" type="number" name="quantity" placeholder="Liczba"  />
+          <form:errors path="quantity"/>
         </div>
         <div class="form-group">
-          <form:input path="firstName" type="text" name="firstName" placeholder="Imię"  />
-          <form:errors path="firstName"/>
+            <form:select path="categories"  items="${categories}" itemLabel="name" itemValue="id" multiple="true"></form:select>
+            <form:errors path="categories"/>
         </div>
-        <div class="form-group">
-          <form:input path="lastName" type="text" name="lastName" placeholder="Nazwisko"  />
-          <form:errors path="lastName"/>
+<%--        <form:hidden path="categories"/>--%>
+
+                <div class="form-group">
+          <form:select path="institution"  items="${institutions}" itemLabel="name" itemValue="id" multiple="false"></form:select>
+          <form:errors path="institution"/>
         </div>
+<%--        <form:hidden path="institution"/>--%>
+
         <div class="form-group">
           <form:input path="street" type="text" name="street" placeholder="Ulica"  />
           <form:errors path="street"/>
@@ -40,22 +44,23 @@
         </div>
 
         <div class="form-group">
-          <form:input path="password" type="password" name="password" placeholder="Hasło"  />
-          <form:errors path="password"/>
-          <c:if test="${not empty invalidPassword}">
-            ${invalidPassword}
-          </c:if>
+          <form:select path="status"  items="${statuses}" itemLabel="value" itemValue="id" multiple="false"></form:select>
+          <form:errors path="status"/>
         </div>
 
         <div class="form-group">
-          <input type="password" name="password2" placeholder="Powtórz hasło" />
+          <form:input path="pickUpComment" type="text" name="pickUpComment" placeholder="Komentarz"  />
+          <form:errors path="pickUpComment"/>
         </div>
 
-<%--        <form:hidden path="password"/>--%>
+        <form:hidden path="pickUpDate"/>
+        <form:hidden path="pickUpTime"/>
+        <form:hidden path="createdOn"/>
 
         <div class="form-group form-group--buttons">
           <form:button class="btn" type="submit">Zapisz</form:button>
         </div>
+        <form:hidden path="id"/>
       </form:form>
     </section>
 

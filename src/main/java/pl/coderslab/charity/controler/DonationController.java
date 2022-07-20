@@ -9,10 +9,8 @@ import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.model.CurrentUser;
-import pl.coderslab.charity.repository.CategoryRepository;
-import pl.coderslab.charity.repository.DonationRepository;
-import pl.coderslab.charity.repository.InstitutionRepository;
-import pl.coderslab.charity.repository.UserRepository;
+import pl.coderslab.charity.repository.*;
+import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,14 +22,18 @@ public class DonationController {
     private final InstitutionRepository institutionRepository;
     private final DonationRepository donationRepository;
     private final CategoryRepository categoryRepository;
+    private final UserService userService;
     private final UserRepository userRepository;
+    private final StatusRepository statusRepository;
 
 
-    public DonationController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
+    public DonationController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserService userService, UserRepository userRepository, StatusRepository statusRepository) {
         this.institutionRepository = institutionRepository;
         this.donationRepository = donationRepository;
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
         this.userRepository = userRepository;
+        this.statusRepository = statusRepository;
     }
 
     @GetMapping("")
@@ -62,10 +64,14 @@ public class DonationController {
         if (bindingResult.hasErrors()) {
             return "form";
         }
+        donation.setStatus(statusRepository.findById(1l).get());
         donationRepository.save(donation);
-        User user = userRepository.findByEmail(customUser.getUser().getEmail());
+        User user = userService.findById(customUser.getUser().getId());
+//        User user = userRepository.findById(customUser.getUser().getId()).get();
         user.getDonations().add(donation);
-        userRepository.save(user);
+//        userRepository.save(user);
+        userService.updateUser(user);
+
 
         return "form-confirmation";
     }
@@ -74,8 +80,6 @@ public class DonationController {
     public List<Category> categories() {
         return categoryRepository.findAll();
     }
-
-
 
 
 }

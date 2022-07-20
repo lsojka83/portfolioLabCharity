@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="table-responsive-lg">
 
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table border="1px" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
                             <th>Id</th>
@@ -22,8 +22,10 @@
                             <th>Kategorie</th>
                             <th>Instytucja</th>
                             <th>Adres</th>
+                            <th>Utworzono</th>
                             <th>Data odebrania</th>
                             <th>Godzina odebrania</th>
+                            <th>Status</th>
                             <th>Komentarz</th>
                             <th>Akcje</th>
                         </tr>
@@ -45,13 +47,19 @@
                                         ${donation.street}
                                         ${donation.city}
                                         ${donation.zipCode}
-                                        ${donation.phoneNumber}
                                 </td>
+                                <td>${donation.createdOn}</td>
                                 <td>${donation.pickUpDate}</td>
                                 <td>${donation.pickUpTime}</td>
+                                <td>
+
+
+                                        ${donation.status.value}
+                                </td>
                                 <td>${donation.pickUpComment}</td>
                                 <td>
-                                    <a href="/edit?id=${donation.id}">Edytuj</a>
+                                    <a href="/user/donation?id=${donation.id}">Edytuj</a>
+                                    <a href="/user/deletedonation?id=${donation.id}">Skasuj</a>
                                 </td>
                             </tr>
                         </c:forEach>

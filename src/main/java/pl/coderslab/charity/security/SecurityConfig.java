@@ -33,7 +33,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/").hasAnyRole(roleUser,roleAdmin)
 //                .antMatchers("/user/**","/form/**").authenticated()
                 .antMatchers("/user/**","/form/**").hasRole(roleUser)
-                .antMatchers("/admin/**").hasRole(roleAdmin)
+                .antMatchers("/admin/**").hasRole(roleAdmin) //TEMPORARY DISABLED!!!!
                 .and().formLogin()
                 .loginPage("/login")
 //                .defaultSuccessUrl("/")

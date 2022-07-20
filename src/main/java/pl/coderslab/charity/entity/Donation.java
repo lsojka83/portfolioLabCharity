@@ -5,8 +5,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Donation {
@@ -18,7 +20,6 @@ public class Donation {
     private int quantity;
     @ManyToMany (fetch = FetchType.EAGER)
     @NotEmpty (message = "Należy zaznaczyć przynajmniej jedną kategorię!")
-//    @Size(min = 1)
     private List<Category> categories;
     @ManyToOne (fetch = FetchType.EAGER)
     @NotNull (message = "Należy zaznaczyć przynajmniej jedną instytucje!")
@@ -38,8 +39,19 @@ public class Donation {
     @NotNull
     private LocalTime pickUpTime;
     private String pickUpComment;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdOn;
+    @ManyToOne (fetch = FetchType.EAGER)
+    private Status status;
+
+
 
     public Donation() {
+    }
+
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDate.now();
     }
 
     public Long getId() {
@@ -129,4 +141,21 @@ public class Donation {
     public void setPickUpComment(String pickUpComment) {
         this.pickUpComment = pickUpComment;
     }
+
+    public LocalDate getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDate createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
 }

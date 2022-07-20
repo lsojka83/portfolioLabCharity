@@ -3,7 +3,6 @@ package pl.coderslab.charity.controler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +12,7 @@ import pl.coderslab.charity.model.CurrentUser;
 import pl.coderslab.charity.repository.CategoryRepository;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
+import pl.coderslab.charity.repository.RoleRepository;
 import pl.coderslab.charity.service.UserService;
 
 
@@ -26,12 +26,14 @@ public class HomeController {
     private final DonationRepository donationRepository;
     private final CategoryRepository categoryRepository;
     private final UserService userService;
+    private final RoleRepository roleRepository;
 
-    public HomeController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserService userService) {
+    public HomeController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserService userService, RoleRepository roleRepository) {
         this.institutionRepository = institutionRepository;
         this.donationRepository = donationRepository;
         this.categoryRepository = categoryRepository;
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -40,7 +42,9 @@ public class HomeController {
                              @RequestParam(required = false) Integer institutionPageNumber,
                              @AuthenticationPrincipal CurrentUser customUser
 
-                             ) {
+                             )
+    {
+
         // pagination handling code block - start
         int institutionPageSize = 6;
         if (institutionPageNumber == null) {
@@ -53,12 +57,17 @@ public class HomeController {
         Page<Institution> page = institutionRepository.findAll(pageRequest);
         model.addAttribute("page", page);
         if(customUser != null) {
+            if(customUser.getUser().getRoles().stream().anyMatch(u->u.getName().equals("ROLE_ADMIN")))
+        {
+            return "redirect:/admin";
+        }
 //            model.addAttribute("user", customUser);
-            model.addAttribute("totalQuantity", customUser.getUser().getDonations().stream()
+            User user =  userService.findById(customUser.getUser().getId());
+            model.addAttribute("totalQuantity",user.getDonations().stream()
                     .map(d -> d.getQuantity())
                     .reduce(Integer::sum).orElse(0)
             );
-            model.addAttribute("donationCount", customUser.getUser().getDonations().size());
+            model.addAttribute("donationCount", user.getDonations().size());
         }
         else {
             model.addAttribute("totalQuantity", donationRepository.getTotalQuantity().orElse(0));

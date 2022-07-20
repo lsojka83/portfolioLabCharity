@@ -8,7 +8,6 @@ import pl.coderslab.charity.model.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public interface InstitutionRepository extends JpaRepository<Institution, Long> {
 
 //    public default List<Pair<Institution, Institution>> findAllInPaires() {
