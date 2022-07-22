@@ -10,7 +10,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">CRUD użytkowników</h1>
+        <h1 class="h3 mb-0 text-gray-800">User CRUD</h1>
 
     </div>
 
@@ -18,7 +18,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Add book</h6>
+                <h6 class="m-0 font-weight-bold text-primary"> Edit</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -78,19 +78,22 @@
                         <tr>
                             <td>Hasło</td>
                             <td>
-                                <form:input path="password" type="password" name="password" placeholder="Hasło"  />
+
+                                <div class="form-group">
+                                    <input type="password" name="password" placeholder="Podaj nowe hasło" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" name="password2" placeholder="Powtórz nowe hasło" />
+                                </div>
                                 <form:errors path="password"/>
+
                                 <c:if test="${not empty invalidPassword}">
                                     ${invalidPassword}
                                 </c:if>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Powtórz hasło</td>
-                            <td>
-                                <input type="password" name="password2" placeholder="Powtórz hasło" />
-                            </td>
-                        </tr>
+
                         </tbody>
                     </table>
 
@@ -102,6 +105,8 @@
     <form:hidden path="roles"/>
     <form:hidden path="enabled"/>
     <form:hidden path="donations"/>
+
+    <input name="group" value="${group}" hidden=/>
 
 
         <div class="text-center">

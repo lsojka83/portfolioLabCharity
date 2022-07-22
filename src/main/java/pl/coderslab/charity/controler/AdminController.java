@@ -45,7 +45,23 @@ public class AdminController {
 
 
     @GetMapping("")
-    public String homeView() {
+    public String homeView(Model model) {
+        model.addAttribute("totalQuantity", donationRepository.getTotalQuantity().orElse(0));
+        model.addAttribute("donationCount", donationRepository.count());
+        model.addAttribute("userCount", userRepository.findAll().stream()
+                .filter(u->u.getRoles()
+                        .stream()
+                        .anyMatch(r->r.getName().equals("ROLE_USER")))
+                .count());
+        model.addAttribute("adminCount", userRepository.findAll().stream()
+                .filter(u->u.getRoles()
+                        .stream()
+                        .anyMatch(r->r.getName().equals("ROLE_ADMIN"))).count());
+
+        List<Donation> donations = donationRepository.findAll();
+        model.addAttribute("donationsCreated",donations.stream().filter(d->d.getStatus().getValue().equals("złożone")).count());
+        model.addAttribute("donationsPickedUp",donations.stream().filter(d->d.getStatus().getValue().equals("odebrane")).count());
+        model.addAttribute("donationsDelivered",donations.stream().filter(d->d.getStatus().getValue().equals("przekazane")).count());
 
         return "admin-home";
 
@@ -120,25 +136,45 @@ public class AdminController {
         return "redirect:/admin/institutions";
     }
 
-    @GetMapping("/addAdmin")
+    @GetMapping("/addadmin")
     public String adminAddForm(Model model) {
-        User user = new User();
-        Role userRole = roleRepository.findByName("ROLE_USER");
-        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
-        model.addAttribute("user", user);
-
-        return "admin-add-edit-user";
+        model.addAttribute("user", new User());
+        return "admin-add-admin";
     }
 
-    @PostMapping("/addAdmin")
-    public String adminAddSave(@Valid User user, BindingResult result, @RequestParam String confirm) {
+    @PostMapping("/addadmin")
+    public String adminAddSave(@Valid User user, BindingResult result,
+                               @RequestParam String confirm,
+                               @RequestParam String password,
+                               @RequestParam String password2,
+                               Model model
+    ) {
         if (confirm.equals("no")) {
             return "redirect:/admin/admins";
         }
-        if (result.hasErrors()) {
-            return "admin-add-edit-user";
+
+
+        if(password.isEmpty() || password2.isEmpty())
+        {
+            model.addAttribute("invalidPassword", Messages.PASSWORD_IS_BLANK);
+            return "admin-add-admin";
         }
+
+        if (!password.equals(password2))
+        {
+                model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
+                return "admin-add-admin";
+        }
+
+        if (result.hasErrors()) {
+            return "admin-add-admin";
+        }
+
         if (confirm.equals("yes")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setEnabled(1);
+            Role userRole = roleRepository.findByName("ROLE_ADMIN");
+            user.setRoles(new HashSet<>(Arrays.asList(userRole)));
             userRepository.save(user);
         }
         return "redirect:/admin/admins";
@@ -147,59 +183,47 @@ public class AdminController {
 
     //edit actions
 
-    @GetMapping("/editcurrentuser")
-    public String currentUserEditForm() {
-        return "admin-add-edit-user";
-    }
-
-    @PostMapping("/editcurrentuser")
-    public String currentUserEditSave(@Valid User user, BindingResult bindingResult,
-                           @RequestParam String password2, Model model) {
-
-        boolean updatePassword = false;
-
-//        if (!passwordValidator.isValid(user.getPassword(), null)) {
-//            model.addAttribute("invalidPassword", Messages.INVALID_PASSWORD);
-//        }
-
-        if (bindingResult.hasErrors()) {
-            return "admin-add-edit-user";
-        }
-
-        if (!user.getPassword().equals(userService.findById(user.getId()).getPassword())) {
-            System.out.println("!!!!" + user.getPassword() + " " + password2);
-            if (!user.getPassword().equals(
-                    password2
-            )) {
-                model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
-            } else {
-                updatePassword = true;
-            }
-        }
-        if (model.getAttribute("invalidPassword") != null) {
-            return "admin-add-edit-user";
-        }
-
-        userService.updateUser(user, updatePassword);
-        return "redirect:/admin/home";
-    }
+//    @GetMapping("/editcurrentuser")
+//    public String currentUserEditForm(
+//            @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+//        model.addAttribute("user",currentUser.getUser());
+//        return "admin-add-edit-user";
+//    }
 
     @GetMapping("/edituser")
     public String userEditForm(Model model,
-                               @RequestParam String id) {
-        model.addAttribute("user", userService.findById(Long.parseLong(id)));
+                               @RequestParam(required = false) String id,
+                               @RequestParam(required = false) String group,
+                               @AuthenticationPrincipal CurrentUser currentUser) {
+        if(id==null)
+        {
+            model.addAttribute("user",userService.findById(currentUser.getUser().getId()));
+
+        }
+        else {
+            model.addAttribute("user", userService.findById(Long.parseLong(id)));
+        }
+        model.addAttribute("group", group);
         return "admin-add-edit-user";
     }
 
     @PostMapping("/edituser")
     public String userEditSave(@Valid User user, BindingResult bindingResult,
-                                      @RequestParam(required = false) String password2, Model model,
-                               @RequestParam String confirm) {
+                               @RequestParam String password,
+                               @RequestParam String password2,
+                               Model model,
+                               @RequestParam String confirm,
+                               @RequestParam(required = false) String group
+
+    ) {
+
+        if(group == null)
+        {
+            group ="";
+        }
 
         if (confirm.equals("no")) {
-            System.out.println("!!!"+user.getId());
-            System.out.println("!!!"+user.getEmail());
-            return "redirect:/admin/users";
+            return "redirect:/admin/"+group;
         }
 
         boolean updatePassword = false;
@@ -212,22 +236,35 @@ public class AdminController {
             return "admin-add-edit-user";
         }
 
-        if (!user.getPassword().equals(userService.findById(user.getId()).getPassword())) {
-            System.out.println("!!!!" + user.getPassword() + " " + password2);
-            if (!user.getPassword().equals(
-                    password2
-            )) {
+        if (!password.isEmpty() || !password2.isEmpty())
+        {
+            if (!password.equals(password2))
+            {
                 model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
             } else {
                 updatePassword = true;
             }
-        }
-        if (model.getAttribute("invalidPassword") != null) {
-            return "admin-add-edit-user";
+            if (model.getAttribute("invalidPassword") != null) {
+                return "admin-add-edit-user";
+            }
         }
 
+//        if (!user.getPassword().equals(userService.findById(user.getId()).getPassword())) {
+//            System.out.println("!!!!" + user.getPassword() + " " + password2);
+//            if (!user.getPassword().equals(
+//                    password2
+//            )) {
+//                model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
+//            } else {
+//                updatePassword = true;
+//            }
+//        }
+//        if (model.getAttribute("invalidPassword") != null) {
+//            return "admin-add-edit-user";
+//        }
+        user.setPassword(userService.findById(user.getId()).getPassword());
         userService.updateUser(user, updatePassword);
-        return "redirect:/admin/users";
+        return "redirect:/admin/"+group;
     }
 
     @GetMapping("/editinstitution")
@@ -275,13 +312,36 @@ public class AdminController {
     //delete actions
     @GetMapping("/deleteinstitution")
     public String deleteInstitution(Model model,
-                                     @RequestParam String id) {
+                                    @RequestParam String id) {
         institutionRepository.deleteById(Long.parseLong(id));
 
         return "redirect:/admin/institutions";
     }
 
+    @GetMapping("/deletecategory")
+    public String deleteCategory(Model model,
+                                 @RequestParam String id) {
+        categoryRepository.deleteById(Long.parseLong(id));
 
+        return "redirect:/admin/categories";
+    }
+
+    @GetMapping("/deleteuser")
+    public String deleteUser(Model model,
+                             @RequestParam String id,
+                             @RequestParam String group) {
+
+        userRepository.deleteById(Long.parseLong(id));
+
+        return "redirect:/admin/" + group;
+    }
+
+    //logout
+    @GetMapping("/logout")
+    public String logout()
+    {
+        return "redirect:/logout";
+    }
 
 
 
@@ -294,20 +354,17 @@ public class AdminController {
     }
 
     @ModelAttribute("institutions")
-    public List<Institution> getInstitutions()
-    {
+    public List<Institution> getInstitutions() {
         return institutionRepository.findAll();
     }
 
     @ModelAttribute("donations")
-    public List<Donation> getDonations()
-    {
+    public List<Donation> getDonations() {
         return donationRepository.findAll();
     }
 
     @ModelAttribute("admins")
-    public List<User> getAdmins()
-    {
+    public List<User> getAdmins() {
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
         return userRepository.findAll().stream()
                 .filter(u -> u.getRoles().contains(adminRole))
@@ -315,8 +372,7 @@ public class AdminController {
     }
 
     @ModelAttribute("users")
-    public List<User> getUsers()
-    {
+    public List<User> getUsers() {
         Role userRole = roleRepository.findByName("ROLE_USER");
         return userRepository.findAll().stream()
                 .filter(u -> u.getRoles().contains(userRole))

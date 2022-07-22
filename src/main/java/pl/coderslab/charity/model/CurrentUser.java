@@ -12,11 +12,21 @@ public class CurrentUser extends User {
     public CurrentUser(String email, String password,
                        Collection<? extends GrantedAuthority> authorities,
                        pl.coderslab.charity.entity.User user) {
-        super(email,password,authorities);
+        super(email, password, authorities);
         this.user = user;
     }
-    public  pl.coderslab.charity.entity.User getUser()
-    {
+
+    public pl.coderslab.charity.entity.User getUser() {
         return user;
     }
+
+    public boolean hasRole(String roleName) {
+        if (user.getRoles().stream().anyMatch(r -> r.getName().equals(roleName))) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }
+

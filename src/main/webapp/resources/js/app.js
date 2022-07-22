@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const moreInfoOut = document.getElementById("moreInfoOut");
   const institutionListDiv = document.getElementById("institution-list");
 
+  const donationsCreated = document.getElementById("institution-list");
+
   // const paginationDiv = document.getElementById("pagination");
   const baseUrl = 'http://localhost:8080/institutions/';
   let institutionCurrentPage = 0;

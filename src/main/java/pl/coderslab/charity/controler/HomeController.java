@@ -57,8 +57,7 @@ public class HomeController {
         Page<Institution> page = institutionRepository.findAll(pageRequest);
         model.addAttribute("page", page);
         if(customUser != null) {
-            if(customUser.getUser().getRoles().stream().anyMatch(u->u.getName().equals("ROLE_ADMIN")))
-        {
+            if(customUser.hasRole("ROLE_ADMIN"))        {
             return "redirect:/admin";
         }
 //            model.addAttribute("user", customUser);

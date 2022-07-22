@@ -23,7 +23,6 @@ public class User {
     @NotBlank
     @Column(nullable = false, unique = true, length = 100)
     private String email;
-    @NotBlank
     private String password;
     private int enabled;
     private String street;

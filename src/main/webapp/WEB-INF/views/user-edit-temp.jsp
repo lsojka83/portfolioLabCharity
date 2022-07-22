@@ -40,17 +40,17 @@
         </div>
 
         <div class="form-group">
-        <input type="password" name="password" placeholder="Podaj nowe hasło" />
-      </div>
+          <form:input path="password" type="password" name="password" placeholder="Hasło"  />
+          <form:errors path="password"/>
+          <c:if test="${not empty invalidPassword}">
+            ${invalidPassword}
+          </c:if>
+        </div>
 
         <div class="form-group">
-          <input type="password" name="password2" placeholder="Powtórz nowe hasło" />
+          <input type="password" name="password2" placeholder="Powtórz hasło" />
         </div>
-<%--        <form:errors path="password"/>--%>
 
-        <c:if test="${not empty invalidPassword}">
-          ${invalidPassword}
-        </c:if>
 <%--        <form:hidden path="password"/>--%>
 
         <div class="form-group form-group--buttons">

@@ -45,10 +45,10 @@ public class UserController {
 
     @PostMapping("/edit")
     public String userSave(@Valid User user, BindingResult bindingResult,
-                           @RequestParam String password2, Model model) {
-
-        System.out.println("!!!!!"+user.getEmail());
-        System.out.println("!!!!!"+user.getId());
+                           @RequestParam String password,
+                           @RequestParam String password2,
+//                           @AuthenticationPrincipal CurrentUser currentUser,
+                           Model model) {
 
         boolean updatePassword = false;
 
@@ -60,23 +60,37 @@ public class UserController {
             return "user-edit";
         }
 
-        if(!user.getPassword().equals(userService.findById(user.getId()).getPassword()))
+        if (!password.isEmpty() || !password2.isEmpty())
         {
-            System.out.println("!!!!" +user.getPassword()+" "+ password2);
-            if (!user.getPassword().equals(
-                    password2
-            )) {
-                model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
+                if (!password.equals(password2))
+                {
+                    model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
+                } else {
+                    updatePassword = true;
+                }
+            if (model.getAttribute("invalidPassword") != null) {
+                return "user-edit";
             }
-            else {
-                updatePassword = true;
-            }
-        }
-        if (model.getAttribute("invalidPassword") != null) {
-            return "user-edit";
         }
 
-        userService.updateUser(user,updatePassword);
+
+//        if(!user.getPassword().equals(userService.findById(user.getId()).getPassword()))
+//        {
+//            System.out.println("!!!!" +user.getPassword()+" "+ password2);
+//            if (!user.getPassword().equals(
+//                    password2
+//            )) {
+//                model.addAttribute("invalidPassword", Messages.PASSWORD_ARE_NOT_EQUAL);
+//            }
+//            else {
+//                updatePassword = true;
+//            }
+//        }
+//        if (model.getAttribute("invalidPassword") != null) {
+//            return "user-edit";
+//        }
+        user.setPassword(userService.findById(user.getId()).getPassword());
+        userService.updateUser(user, updatePassword);
         return "redirect:/";
     }
 
@@ -93,17 +107,16 @@ public class UserController {
                                @AuthenticationPrincipal CurrentUser customUser) {
         model.addAttribute("donation", donationRepository.findById(id));
         User user = userService.findById(customUser.getUser().getId());
-        model.addAttribute("user",user );
+        model.addAttribute("user", user);
 
         return "donation-edit";
     }
 
     @PostMapping("/donation")
     public String donationSave(@Valid final Donation donation, final BindingResult bindingResult,
-                         Model model) {
-        if(bindingResult.hasErrors())
-        {
-            System.out.println("!!!"+bindingResult.getAllErrors());
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("!!!" + bindingResult.getAllErrors());
             return "donation-edit";
         }
 
@@ -125,8 +138,7 @@ public class UserController {
     }
 
     @ModelAttribute("statuses")
-    public List<Status> getStatusList()
-    {
+    public List<Status> getStatusList() {
         return statusRepository.findAll();
     }
 
@@ -136,8 +148,7 @@ public class UserController {
     }
 
     @ModelAttribute("institutions")
-    public List<Institution> getInstitutions()
-    {
+    public List<Institution> getInstitutions() {
         return institutionRepository.findAll();
     }
 }

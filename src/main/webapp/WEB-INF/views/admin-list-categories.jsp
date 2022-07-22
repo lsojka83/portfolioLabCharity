@@ -9,7 +9,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">CRUD Kategorii</h1>
-        <a href="/admin/editcategory" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="/admin/addcategory" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i>Dodaj kategorie</a>
     </div>
 
@@ -35,7 +35,7 @@
                             <td>${category.name}</td>
                             <td>
                                 <a href="/admin/editcategory?id=${category.id}">Edytuj</a>
-                                <a href="/admin/deletecategory?id=${category.id}">Skasuj</a>
+                                <a href="/admin/deletecategory?id=${category.id}" onclick="return confirm('Czy skasować?')">Skasuj</a>
                             </td>
                         </tr>
                     </c:forEach>

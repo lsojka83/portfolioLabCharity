@@ -36,8 +36,8 @@
                             <td>${user.email}</td>
                             <td>${user.lastName}</td>
                             <td>
-                                <a href="/admin/edituser?id=${user.id}">Edytuj</a>
-                                <a href="/admin/deleteuser?id=${user.id}">Skasuj</a>
+                                <a href="/admin/edituser?id=${user.id}&group=users">Edytuj</a>
+                                <a href="/admin/deleteuser?id=${user.id}&group=users" onclick="return confirm('Czy skasować?')">Skasuj</a>
                             </td>
                         </tr>
                     </c:forEach>

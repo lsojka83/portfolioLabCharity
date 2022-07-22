@@ -9,7 +9,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Admin CRUD</h1>
-        <a href="/add" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="/admin/addadmin" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i>Dodaj admina</a>
     </div>
 
@@ -37,8 +37,9 @@
                             <td>${admin.firstName}</td>
                             <td>${admin.lastName}</td>
                             <td>
-                                <a href="/admin/deleteuser?id=${admin.id}">Edytuj</a>
-                                <a href="/admin/edituser?id=${admin.id}">Skasuj</a>
+                                <a href="/admin/edituser?id=${admin.id}&group=admins"">Edytuj</a>
+                                <a href="/admin/deleteuser?id=${admin.id}&group=admins" onclick="return confirm('Czy skasować?')">Skasuj</a>
+
                             </td>
                         </tr>
                     </c:forEach>

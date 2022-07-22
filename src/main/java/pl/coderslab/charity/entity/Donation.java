@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Donation {
@@ -20,7 +21,7 @@ public class Donation {
     private int quantity;
     @ManyToMany (fetch = FetchType.EAGER)
     @NotEmpty (message = "Należy zaznaczyć przynajmniej jedną kategorię!")
-    private List<Category> categories;
+    private Set<Category> categories;
     @ManyToOne (fetch = FetchType.EAGER)
     @NotNull (message = "Należy zaznaczyć przynajmniej jedną instytucje!")
     private Institution institution;
@@ -70,11 +71,11 @@ public class Donation {
         this.quantity = quantity;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
 

@@ -37,7 +37,7 @@
                             <td>${institution.description}</td>
                             <td>
                                 <a href="/admin/editinstitution?id=${institution.id}">Edytuj</a>
-                                <a href="/admin/deleteinstitution?id=${institution.id}" onclick="return confirm('Are you sure?')">Skasuj</a>
+                                <a href="/admin/deleteinstitution?id=${institution.id}" onclick="return confirm('Czy skasować?')">Skasuj</a>
                             </td>
                         </tr>
                     </c:forEach>
