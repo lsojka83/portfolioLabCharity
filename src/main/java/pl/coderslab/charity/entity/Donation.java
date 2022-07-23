@@ -42,6 +42,8 @@ public class Donation {
     private String pickUpComment;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate actualPickUpDate;
     @ManyToOne (fetch = FetchType.EAGER)
     private Status status;
 
@@ -159,4 +161,11 @@ public class Donation {
         this.status = status;
     }
 
+    public LocalDate getActualPickUpDate() {
+        return actualPickUpDate;
+    }
+
+    public void setActualPickUpDate(LocalDate actualPickUpDate) {
+        this.actualPickUpDate = actualPickUpDate;
+    }
 }

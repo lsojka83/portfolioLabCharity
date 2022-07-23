@@ -86,7 +86,9 @@ public class AdminController {
     }
 
     @GetMapping("/admins")
-    public String adminsList(Model model) {
+    public String adminsList(Model model,
+                             @AuthenticationPrincipal CurrentUser currentUser) {
+        model.addAttribute("currentAdminId", currentUser.getUser().getId());
         return "admin-list-admins";
     }
 
@@ -329,9 +331,12 @@ public class AdminController {
     @GetMapping("/deleteuser")
     public String deleteUser(Model model,
                              @RequestParam String id,
-                             @RequestParam String group) {
+                             @RequestParam String group,
+                             @AuthenticationPrincipal CurrentUser currentUser) {
 
-        userRepository.deleteById(Long.parseLong(id));
+        if(Long.parseLong(id) != currentUser.getUser().getId()) {
+            userRepository.deleteById(Long.parseLong(id));
+        }
 
         return "redirect:/admin/" + group;
     }

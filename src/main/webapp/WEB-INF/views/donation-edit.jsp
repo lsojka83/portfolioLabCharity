@@ -11,6 +11,8 @@
       <h2>Edytuj dane</h2>
       <form:form action="/user/donation" method="post" modelAttribute="donation">
         <div class="form-group">
+          <c:if test="${donation.status.value=='złożone'}">
+
           <form:input path="quantity" type="number" name="quantity" placeholder="Liczba"  />
           <form:errors path="quantity"/>
         </div>
@@ -18,13 +20,11 @@
             <form:select path="categories"  items="${categories}" itemLabel="name" itemValue="id" multiple="true"></form:select>
             <form:errors path="categories"/>
         </div>
-<%--        <form:hidden path="categories"/>--%>
 
                 <div class="form-group">
           <form:select path="institution"  items="${institutions}" itemLabel="name" itemValue="id" multiple="false"></form:select>
           <form:errors path="institution"/>
         </div>
-<%--        <form:hidden path="institution"/>--%>
 
         <div class="form-group">
           <form:input path="street" type="text" name="street" placeholder="Ulica"  />
@@ -44,22 +44,93 @@
         </div>
 
         <div class="form-group">
-          <form:select path="status"  items="${statuses}" itemLabel="value" itemValue="id" multiple="false"></form:select>
-          <form:errors path="status"/>
-        </div>
-
-        <div class="form-group">
           <form:input path="pickUpComment" type="text" name="pickUpComment" placeholder="Komentarz"  />
           <form:errors path="pickUpComment"/>
         </div>
+          </c:if>
+        <c:if test="${donation.status.value!='złożone'}">
+          <div class="form-group">
+            Ilość worków:<br>
+            ${donation.quantity}
+          </div>
+          <div class="form-group">
+            Kategorie:<br>
+            <c:forEach var="category" items="${donation.categories}">
+              <li>${category.name}</li>
+            </c:forEach>          </div>
+          <div class="form-group">
+            Fundacja:<br>
+          ${donation.institution.name}
+          </div>
+          <div class="form-group">
+            Ulica:<br>
+          ${donation.street}
+          </div>
+          <div class="form-group">
+            Miasto:<br>
+
+          ${donation.city}
+          </div>
+          <div class="form-group">
+            Kod pocztowy:<br>
+
+          ${donation.zipCode}
+          </div>
+          <div class="form-group">
+            Nr tel.:<br>
+
+          ${donation.phoneNumber}
+          </div>
+          <div class="form-group">
+            Komentarz:<br>
+
+          ${donation.pickUpComment}
+          </div>
+          <form:hidden path="quantity"/>
+          <form:hidden path="categories"/>
+          <form:hidden path="institution"/>
+          <form:hidden path="street"/>
+          <form:hidden path="city"/>
+          <form:hidden path="zipCode"/>
+          <form:hidden path="phoneNumber"/>
+          <form:hidden path="pickUpComment"/>
+        </c:if>
+
 
         <form:hidden path="pickUpDate"/>
         <form:hidden path="pickUpTime"/>
         <form:hidden path="createdOn"/>
+        <form:hidden path="status"/>
+        <form:hidden path="actualPickUpDate"/>
 
+
+        <div class="form-group">
+          Status daru:
+        ${donation.status.value}
+        </div>
+
+        <c:if test="${donation.status.value=='złożone'}">
+          Czy dar został odebrany?
+          <input type="checkbox" id="pickedUp" name="pickedUp" value="1">
+        </c:if>
+
+        <c:if test="${not empty donation.actualPickUpDate}">
+          Data odebrania daru:
+          ${donation.actualPickUpDate}
+        </c:if>
+        <c:if test="${donation.status.value=='złożone'}">
         <div class="form-group form-group--buttons">
           <form:button class="btn" type="submit">Zapisz</form:button>
         </div>
+        </c:if>
+
+
+
+<%--        <div class="form-group">--%>
+<%--          <form:select path="status"  items="${statuses}" itemLabel="value" itemValue="id" multiple="false"></form:select>--%>
+<%--          <form:errors path="status"/>--%>
+<%--        </div>--%>
+
         <form:hidden path="id"/>
       </form:form>
     </section>

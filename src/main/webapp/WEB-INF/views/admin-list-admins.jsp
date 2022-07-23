@@ -37,9 +37,10 @@
                             <td>${admin.firstName}</td>
                             <td>${admin.lastName}</td>
                             <td>
-                                <a href="/admin/edituser?id=${admin.id}&group=admins"">Edytuj</a>
+                                <a href="/admin/edituser?id=${admin.id}&group=admins">Edytuj</a>
+                                <c:if test="${admin.id != currentAdminId}">
                                 <a href="/admin/deleteuser?id=${admin.id}&group=admins" onclick="return confirm('Czy skasować?')">Skasuj</a>
-
+                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>

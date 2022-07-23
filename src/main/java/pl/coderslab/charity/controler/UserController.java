@@ -16,6 +16,7 @@ import pl.coderslab.charity.repository.StatusRepository;
 import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -105,7 +106,7 @@ public class UserController {
     public String donationEdit(Model model,
                                @RequestParam Long id,
                                @AuthenticationPrincipal CurrentUser customUser) {
-        model.addAttribute("donation", donationRepository.findById(id));
+        model.addAttribute("donation", donationRepository.findById(id).get());
         User user = userService.findById(customUser.getUser().getId());
         model.addAttribute("user", user);
 
@@ -114,11 +115,20 @@ public class UserController {
 
     @PostMapping("/donation")
     public String donationSave(@Valid final Donation donation, final BindingResult bindingResult,
-                               Model model) {
+                               Model model,
+                               @RequestParam(required = false) String pickedUp) {
         if (bindingResult.hasErrors()) {
-            System.out.println("!!!" + bindingResult.getAllErrors());
             return "donation-edit";
         }
+//        System.out.println("!!!! "+pickedUp);
+
+        if(pickedUp!=null) {
+            if (pickedUp.equals("1")) {
+                donation.setStatus(statusRepository.findByValue("odebrane"));
+                donation.setActualPickUpDate(LocalDate.now());
+            }
+        }
+
 
         donationRepository.save(donation);
         return "redirect:/user/donations";
