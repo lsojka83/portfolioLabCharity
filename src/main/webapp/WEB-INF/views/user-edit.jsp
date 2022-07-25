@@ -52,6 +52,13 @@
           ${invalidPassword}
         </c:if>
 <%--        <form:hidden path="password"/>--%>
+<%--        <form:hidden path="id"/>--%>
+        <form:hidden path="roles"/>
+        <form:hidden path="enabled"/>
+        <form:hidden path="donations"/>
+        <form:hidden path="uuid"/>
+        <form:hidden path="active"/>
+        <form:hidden path="sentResetRequest"/>
 
         <div class="form-group form-group--buttons">
           <form:button class="btn" type="submit">Zapisz</form:button>

@@ -26,15 +26,21 @@
                         <th>Email</th>
                         <th>Imię</th>
                         <th>Nazwisko</th>
+                        <th>Nr uuid</th>
+                        <th>Aktywny</th>
+                        <th>Wysłał prośbę o reset hasła</th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach var="user" items="${users}">
                         <tr role="row" class="odd">
-                            <td class="sorting_1">${admin.id}</td>
+                            <td class="sorting_1">${user.id}</td>
                             <td>${user.firstName}</td>
                             <td>${user.email}</td>
                             <td>${user.lastName}</td>
+                            <td>${user.uuid}</td>
+                            <td>${user.active}</td>
+                            <td>${user.sentResetRequest}</td>
                             <td>
                                 <a href="/admin/edituser?id=${user.id}&group=users">Edytuj</a>
                                 <a href="/admin/deleteuser?id=${user.id}&group=users" onclick="return confirm('Czy skasować?')">Skasuj</a>

@@ -11,6 +11,7 @@ import pl.coderslab.charity.repository.UserRepository;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService{
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(1);
+        user.setActive(0);
+        user.setSentResetRequest(0);
+        user.setUuid(UUID.randomUUID().toString());
         Role userRole = roleRepository.findByName("ROLE_USER");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
         userRepository.save(user);

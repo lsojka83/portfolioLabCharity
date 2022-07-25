@@ -36,13 +36,28 @@
         </div>
         <div class="form-group">
           <input type="password" name="password" placeholder="Hasło" />
-          <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
+          <a href="/login/resetpassword" class="btn btn--small btn--without-border reset-password">Zresetuj hasło</a>
         </div>
 
+          <div class="about-us--text">
+            <p>
+              <c:if test="${param.error != null}">
+              Zły email lub hasło!
+            </c:if>
+              <c:if test="${param.inactive != null}">
+            Użytkownik nie został aktywowany. Kliknij w otrzymanym mailu.
+            </c:if>
+              <c:if test="${param.userregistered != null}">
+            Użytkownik zarejestrowany. Email został wysłany.
+            </c:if>
+            </p>
+          </div>
+
         <div class="form-group form-group--buttons">
-          <a href="#" class="btn btn--without-border">Załóż konto</a>      
+          <a href="/register" class="btn btn--without-border">Załóż konto</a>
           <button class="btn" type="submit">Zaloguj się</button>
         </div>
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       </form:form>
     </section>

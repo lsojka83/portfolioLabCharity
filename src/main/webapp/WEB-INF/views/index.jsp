@@ -86,9 +86,7 @@
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy.
             Możesz sprawdzić czym się zajmują.</p>
 
-        <form action="addinstitution" method="get">
-          <button type="submit">Add random instituiton</button>
-        </form>
+
         <%--institution list--%>
         <ul class="help--slides-items">
         <%--Option 1--%>

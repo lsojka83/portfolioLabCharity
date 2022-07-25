@@ -35,6 +35,9 @@ public class User {
     private Set<Role> roles;
     @OneToMany (cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Donation> donations;
+    private String uuid;
+    private int active;
+    private int sentResetRequest;
 
 
     public User() {
@@ -142,5 +145,27 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public int getSentResetRequest() {
+        return sentResetRequest;
+    }
+
+    public void setSentResetRequest(int sentResetRequest) {
+        this.sentResetRequest = sentResetRequest;
+    }
 }

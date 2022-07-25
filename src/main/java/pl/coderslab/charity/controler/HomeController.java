@@ -60,6 +60,9 @@ public class HomeController {
             if(customUser.hasRole("ROLE_ADMIN"))        {
             return "redirect:/admin";
         }
+            if(customUser.getUser().getActive()==0)        {
+                return "redirect:/login?notactive";
+            }
 //            model.addAttribute("user", customUser);
             User user =  userService.findById(customUser.getUser().getId());
             model.addAttribute("totalQuantity",user.getDonations().stream()
@@ -94,18 +97,6 @@ public class HomeController {
     }
 
 
-    @GetMapping("addinstitution")
-    public String addInstitution() {
-        Institution institution = new Institution();
-        String iName = "Fundation " + (new Random(System.currentTimeMillis())).nextInt(1000);
-        institution.setName(iName);
-        institution.setDescription(iName + " opis");
-        institutionRepository.save(institution);
 
-        int institutionPageSize = 10;
-        PageRequest pageRequest = PageRequest.ofSize(institutionPageSize);
-        int numberOfLastPage = institutionRepository.findAll(pageRequest).getTotalPages()-1;
-        return "redirect:?institutionPageNumber="+numberOfLastPage+"#help";
-    }
 
 }

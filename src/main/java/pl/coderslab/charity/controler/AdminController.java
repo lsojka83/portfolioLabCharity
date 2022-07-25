@@ -1,5 +1,6 @@
 package pl.coderslab.charity.controler;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Controller
@@ -135,6 +137,17 @@ public class AdminController {
         if (confirm.equals("yes")) {
             institutionRepository.save(institution);
         }
+        return "redirect:/admin/institutions";
+    }
+
+    @GetMapping("/addrandominstitution") //quick add new random institution
+    public String addInstitution() {
+        Institution institution = new Institution();
+        String iName = "Fundation " + (new Random(System.currentTimeMillis())).nextInt(1000);
+        institution.setName(iName);
+        institution.setDescription(iName + " opis");
+        institutionRepository.save(institution);
+
         return "redirect:/admin/institutions";
     }
 

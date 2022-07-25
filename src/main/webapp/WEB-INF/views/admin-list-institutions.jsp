@@ -12,6 +12,9 @@
         <a href="/admin/addinstitution" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i>Dodaj fundacje</a>
     </div>
+    <form action="/admin/addrandominstitution" method="get">
+        <button type="submit">Add random instituiton</button>
+    </form>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">

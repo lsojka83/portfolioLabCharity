@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.charity.converter.CategoryConverter;
 import pl.coderslab.charity.converter.InstitutionConverter;
@@ -23,19 +24,10 @@ public class CharityApplication {
         return new PasswordValidator();
     }
 
-//    @Bean
-//    public Converter categoryConverter() {
-//        return new CategoryConverter();
-//    }
-//
-//
-//    @Bean
-//    public Converter institutionConverter() {
-//        return new InstitutionConverter();
-//    }
-//
-//    @Bean
-//    public Converter statusConverter() {
-//        return new StatusConverter();
-//    }
+    @Bean
+    public SimpleMailMessage templateSimpleMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText("Przejdz to tego adresu, zeby aktywowac konto: http://localhost:8080/register/activate?uuid=%s");
+        return message;
+    }
 }

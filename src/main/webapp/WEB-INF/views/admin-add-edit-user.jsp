@@ -105,6 +105,10 @@
     <form:hidden path="roles"/>
     <form:hidden path="enabled"/>
     <form:hidden path="donations"/>
+    <form:hidden path="uuid"/>
+    <form:hidden path="active"/>
+    <form:hidden path="sentResetRequest"/>
+
 
     <input name="group" value="${group}" hidden=/>
 
