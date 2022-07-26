@@ -1,7 +1,7 @@
 # Charity - Portfolio Lab project
 ## Webapp allowing logged users to offer donations of their used belongings and assgind them to selected institution, which lated can be picked up and delivered to final recipient.
-## Contains administator panel for managing users, admins, insitutions, donation categories.
-## Additionnaly the app sends emails to activate new user accounts and when a user forgot his/her password and wants to reset it.
+## Contains administrator panel for managing users, admins, insitutions, donation categories.
+## Additionally, the app sends emails to activate new user accounts and when a user forgot his/her password and wants to reset it.
 
 ## Tech used:
 ### - Spring Boot:

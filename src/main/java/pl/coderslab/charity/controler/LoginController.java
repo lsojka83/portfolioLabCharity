@@ -69,6 +69,13 @@ public class LoginController {
     @GetMapping("/reset")
     public String resetPasswordForm(@RequestParam String uuid,
                                     Model model) {
+
+        if(userRepository.findByUuid(uuid).isEmpty() )
+        {
+            model.addAttribute("message", "Link jest nieaktywny");
+            return "show-message";
+        }
+
         model.addAttribute("uuid", uuid);
         return "reset-password-new-password";
     }
