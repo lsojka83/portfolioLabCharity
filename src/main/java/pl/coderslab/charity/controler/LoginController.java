@@ -70,7 +70,7 @@ public class LoginController {
     public String resetPasswordForm(@RequestParam String uuid,
                                     Model model) {
 
-        if(userRepository.findByUuid(uuid).isEmpty() )
+        if(userRepository.findByUuid(uuid)==null)
         {
             model.addAttribute("message", "Link jest nieaktywny");
             return "show-message";
@@ -101,7 +101,7 @@ public class LoginController {
 
         Optional<User> userOptional = userRepository.findByUuid(uuid);
 
-        if (userOptional.isEmpty()) {
+        if (userOptional.get()==null) {
             return "redirect:/";
         }
 
