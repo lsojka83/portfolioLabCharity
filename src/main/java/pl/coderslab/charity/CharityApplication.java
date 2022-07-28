@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.coderslab.charity.converter.CategoryConverter;
 import pl.coderslab.charity.converter.InstitutionConverter;
 import pl.coderslab.charity.converter.StatusConverter;
+import pl.coderslab.charity.model.URL;
 import pl.coderslab.charity.validate.PasswordValidator;
 
 @SpringBootApplication
@@ -27,7 +28,7 @@ public class CharityApplication {
     @Bean
     public SimpleMailMessage templateSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("Przejdz to tego adresu, zeby aktywowac konto: http://localhost:8080/register/activate?uuid=%s");
+        message.setText("Przejdz to tego adresu, zeby aktywowac konto: "+URL.APP_URL+"/register/activate?uuid=%s");
         return message;
     }
 }

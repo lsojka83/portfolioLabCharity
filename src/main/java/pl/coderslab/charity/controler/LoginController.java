@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.email.EmailService;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.model.Messages;
+import pl.coderslab.charity.model.URL;
 import pl.coderslab.charity.repository.UserRepository;
 import pl.coderslab.charity.service.UserService;
 
@@ -58,7 +59,7 @@ public class LoginController {
         user.setSentResetRequest(1);
         userService.updateUser(user);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("Wejdź na podaną stronę i wpisz nowe hasło: http://localhost:8080/login/reset?uuid=%s");
+        message.setText("Wejdź na podaną stronę i wpisz nowe hasło: "+URL.APP_URL+"/login/reset?uuid=%s");
         String text = String.format(message.getText(), user.getUuid());
         emailService.sendSimpleMessage(user.getEmail(), "Charity app - link resetujący hasło", text);
         model.addAttribute("message", "Email z linkiem resetującym został wysłany");

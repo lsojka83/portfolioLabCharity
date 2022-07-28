@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const donationsCreated = document.getElementById("institution-list");
 
   // const paginationDiv = document.getElementById("pagination");
-  const baseUrl = 'http://localhost:8080/institutions/';
+  const baseUrl = 'https://charityportfolio.herokuapp.com/institutions/';
   let institutionCurrentPage = 0;
 
   const institutionPreviousPageLink = document.getElementById('institutionPreviousPageLink');
