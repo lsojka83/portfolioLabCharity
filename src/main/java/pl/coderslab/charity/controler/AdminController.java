@@ -277,7 +277,9 @@ public class AdminController {
 //        if (model.getAttribute("invalidPassword") != null) {
 //            return "admin-add-edit-user";
 //        }
-        user.setPassword(userService.findById(user.getId()).getPassword());
+        if(!updatePassword) {
+            user.setPassword(userService.findById(user.getId()).getPassword());
+        }
         userService.updateUser(user, updatePassword);
         return "redirect:/admin/"+group;
     }
