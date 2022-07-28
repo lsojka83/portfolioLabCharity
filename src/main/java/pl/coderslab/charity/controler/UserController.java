@@ -90,7 +90,9 @@ public class UserController {
 //        if (model.getAttribute("invalidPassword") != null) {
 //            return "user-edit";
 //        }
-        user.setPassword(userService.findById(user.getId()).getPassword());
+        if(!updatePassword) {
+            user.setPassword(userService.findById(user.getId()).getPassword());
+        }
         userService.updateUser(user, updatePassword);
         return "redirect:/";
     }
