@@ -64,7 +64,7 @@
               <div class="form-group form-group--checkbox">
                 <label>
                     <%--form:checkbox IS NOT SHOW SELECTION - WHY??--%>
-                <form:checkbox path="categories" value="${category}"/>
+                <form:checkbox path="categories" title="${category.name}" value="${category}"/>
 <%--                  <input type="checkbox" name="categories" value="${category.id}" id=" ${category.name}"/>--%>
                   <span class="checkbox"></span>
                   <span class="description">

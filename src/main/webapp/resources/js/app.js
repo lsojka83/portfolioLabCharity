@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
       for (let i = 0; i < categoryCheckboxes.length; i++)
       {
         if(categoryCheckboxes[i].checked) {
-          selectedCategoryArray.push(categoryCheckboxes[i].id)
+          selectedCategoryArray.push(categoryCheckboxes[i].title)
         }
       }
 
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       }
 
-      quantityOutput.innerHTML = donForm.elements.quantity.value + "x worek z categoriami:" + selectedCategoryArray;
+      quantityOutput.innerHTML = donForm.elements.quantity.value + "x worek z kategoriami:" + selectedCategoryArray;
       if(selectedInstitution!=null) {
         institutionOut.innerText = "Dla fundacji: " + selectedInstitution;
       }
