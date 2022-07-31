@@ -29,6 +29,8 @@
                         <th>Nr uuid</th>
                         <th>Aktywny</th>
                         <th>Wysłał prośbę o reset hasła</th>
+                        <th>Akcje</th>
+
                     </tr>
                     </thead>
                     <tbody>

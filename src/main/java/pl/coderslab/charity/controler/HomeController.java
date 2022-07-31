@@ -2,6 +2,7 @@ package pl.coderslab.charity.controler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -51,6 +52,14 @@ public class HomeController {
                              @AuthenticationPrincipal CurrentUser customUser
                              )
     {
+
+        //show errors test code
+//        if(institutionPageNumber==1)
+//        {
+//            throw new IllegalArgumentException();
+//
+//        }
+
 
         // pagination handling code block - start
         int institutionPageSize = 6;
@@ -115,4 +124,5 @@ public class HomeController {
         }
         return "redirect:/";
     }
+
 }

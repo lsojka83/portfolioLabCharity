@@ -27,6 +27,7 @@
                         <th>Email</th>
                         <th>Imię</th>
                         <th>Nazwisko</th>
+                        <th>Akcje</th>
                     </tr>
                     </thead>
                     <tbody>

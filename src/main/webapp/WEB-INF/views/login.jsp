@@ -60,6 +60,16 @@
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       </form:form>
+<h2>
+  Testowe konto użytkownika:
+  <br>
+  Email: user1@op.pl Hasło: 123
+  <br>
+  Testowe konto administratora
+  <br>
+  Email: admin@wp.pl Hasło: 123
+
+</h2>
     </section>
 
 <%@ include file="/WEB-INF/views/jspf/footer.jspf" %>
