@@ -4,7 +4,7 @@
     <li><a href="/" class="btn btn--without-border active">Start</a></li>
     <li><a href="/#steps" class="btn btn--without-border"><spring:message code="header-index-topbar-links.about_app"/></a></li>
     <li><a href="/#about-us" class="btn btn--without-border"><spring:message code="header-index-topbar-links.about_us"/></a></li>
-    <li><a href=/"#help" class="btn btn--without-border"><spring:message code="header-index-topbar-links.institutions"/></a></li>
+    <li><a href="/#help" class="btn btn--without-border"><spring:message code="header-index-topbar-links.institutions"/></a></li>
     <li><a href="/form" class="btn btn--without-border"><spring:message code="header-index-topbar-links.donate"/></a></li>
     <li><a href="/#contact" class="btn btn--without-border"><spring:message code="header-index-topbar-links.contact"/></a></li>
 </ul>
