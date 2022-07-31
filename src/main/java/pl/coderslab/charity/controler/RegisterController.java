@@ -1,5 +1,7 @@
 package pl.coderslab.charity.controler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.email.EmailService;
-import pl.coderslab.charity.email.EmailServiceImpl;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.model.Messages;
+import pl.coderslab.charity.model.URL;
 import pl.coderslab.charity.repository.RoleRepository;
 import pl.coderslab.charity.repository.UserRepository;
 import pl.coderslab.charity.service.UserServiceImpl;
@@ -32,20 +34,22 @@ public class RegisterController {
     private final UserServiceImpl userService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailService emailService;
-    private final EmailServiceImpl emailServiceImpl;
 
-    @Autowired
-    public SimpleMailMessage template;
+//    @Autowired
+//    public SimpleMailMessage template;
+
+    private Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
 
-    public RegisterController(UserRepository userRepository, PasswordValidator passwordValidator, RoleRepository roleRepository, UserServiceImpl userService, BCryptPasswordEncoder passwordEncoder, EmailService emailService, EmailServiceImpl emailServiceImpl) {
+    public RegisterController(UserRepository userRepository, PasswordValidator passwordValidator,
+                              RoleRepository roleRepository, UserServiceImpl userService, BCryptPasswordEncoder passwordEncoder,
+                              EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordValidator = passwordValidator;
         this.roleRepository = roleRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
-        this.emailServiceImpl = emailServiceImpl;
     }
 
     @GetMapping("")
@@ -80,16 +84,21 @@ public class RegisterController {
 
         userService.saveUser(user);
 
-        String text = String.format(template.getText(), user.getUuid());
-        emailService.sendSimpleMessage(user.getEmail(), "Charity app - potwierdź adres email", text);
+
+        // send an email
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setText("Przejdz to tego adresu, zeby aktywowac konto: "+URL.APP_URL+"/register/activate?uuid=%s");
+            String text = String.format(message.getText(), user.getUuid());
+//        String text = String.format(template.getText(), user.getUuid());
+            emailService.sendSimpleMessage(user.getEmail(), "Charity app - potwierdź adres email", text);
+        }catch( Exception e ){
+            // catch error
+            logger.info("Error Sending Email: " + e.getMessage());
+        }
+
 
         return "redirect:login?userregistered";
-    }
-
-    @GetMapping("/sendemail")
-    public String sendEmail() {
-        emailService.sendSimpleMessage("smietnik123@wp.pl", "Test maila", "Tresc maila");
-        return "redirect:/register";
     }
 
     @GetMapping("/activate")

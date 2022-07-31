@@ -11,15 +11,13 @@
     <h2>Resetowanie hasła - podaj nowe hasło</h2>
 
     <form:form action="/login/reset" method="post">
+
         <div class="form-group">
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Hasło"/>
-            </div>
+            <input type="password" name="password" placeholder="Hasło"/>
             <c:if test="${not empty invalidPassword}">
                 ${invalidPassword}
             </c:if>
         </div>
-
         <div class="form-group">
             <input type="password" name="password2" placeholder="Powtórz hasło"/>
         </div>

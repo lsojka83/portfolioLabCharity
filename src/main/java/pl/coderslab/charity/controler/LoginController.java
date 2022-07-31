@@ -1,5 +1,7 @@
 package pl.coderslab.charity.controler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,9 @@ public class LoginController {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final UserService userService;
+
+    private Logger logger = LoggerFactory.getLogger(LoginController.class);
+
 
     public LoginController(UserRepository userRepository, EmailService emailService, UserService userService) {
         this.userRepository = userRepository;
@@ -58,10 +63,22 @@ public class LoginController {
         user.setUuid(UUID.randomUUID().toString());
         user.setSentResetRequest(1);
         userService.updateUser(user);
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("Wejdź na podaną stronę i wpisz nowe hasło: "+URL.APP_URL+"/login/reset?uuid=%s");
-        String text = String.format(message.getText(), user.getUuid());
-        emailService.sendSimpleMessage(user.getEmail(), "Charity app - link resetujący hasło", text);
+
+        // send an email
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setText("Wejdź na podaną stronę i wpisz nowe hasło: "+URL.APP_URL+"/login/reset?uuid=%s");
+            String text = String.format(message.getText(), user.getUuid());
+            emailService.sendSimpleMessage(user.getEmail(), "Charity app - link resetujący hasło", text);
+        }catch( Exception e ){
+            // catch error
+            logger.info("Error Sending Email: " + e.getMessage());
+        }
+
+
+
+
+
         model.addAttribute("message", "Email z linkiem resetującym został wysłany");
         return "show-message";
     }

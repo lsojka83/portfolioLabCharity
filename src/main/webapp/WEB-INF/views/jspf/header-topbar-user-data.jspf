@@ -16,7 +16,7 @@
                 <li>
                     <form action="<c:url value="/logout"/>" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="submit" value="Wyloguj">
+                        <input class="button-user-logged" type="submit" value="Wyloguj">
                     </form>
                 </li>
             </ul>

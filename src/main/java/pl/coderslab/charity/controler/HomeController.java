@@ -1,11 +1,15 @@
 package pl.coderslab.charity.controler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.email.EmailData;
+import pl.coderslab.charity.email.EmailService;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.model.CurrentUser;
@@ -15,11 +19,8 @@ import pl.coderslab.charity.repository.InstitutionRepository;
 import pl.coderslab.charity.repository.RoleRepository;
 import pl.coderslab.charity.service.UserService;
 
-
-import java.util.Random;
-
 @Controller
-@RequestMapping("/")
+@RequestMapping("")
 public class HomeController {
 
     private final InstitutionRepository institutionRepository;
@@ -27,13 +28,20 @@ public class HomeController {
     private final CategoryRepository categoryRepository;
     private final UserService userService;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
-    public HomeController(InstitutionRepository institutionRepository, DonationRepository donationRepository, CategoryRepository categoryRepository, UserService userService, RoleRepository roleRepository) {
+    private Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+
+    public HomeController(InstitutionRepository institutionRepository, DonationRepository donationRepository,
+                          CategoryRepository categoryRepository, UserService userService,
+                          RoleRepository roleRepository, EmailService emailService) {
         this.institutionRepository = institutionRepository;
         this.donationRepository = donationRepository;
         this.categoryRepository = categoryRepository;
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
 
@@ -41,7 +49,6 @@ public class HomeController {
     public String homeAction(Model model,
                              @RequestParam(required = false) Integer institutionPageNumber,
                              @AuthenticationPrincipal CurrentUser customUser
-
                              )
     {
 
@@ -91,12 +98,21 @@ public class HomeController {
 //        }
         // pagination handling code block - end
 
-
-
         return "index";
     }
 
-
-
-
+    @PostMapping("/contact")
+    public String contact(@RequestParam String name,
+                          @RequestParam String surname,
+                          @RequestParam String message)
+    {
+        // send an email
+        try {
+            emailService.sendSimpleMessage(EmailData.emailAddressForsSendingMessagesToUsers,"Wiadomość z aplikacji",message +" "+name+" "+surname);
+        }catch( Exception e ){
+            // catch error
+            logger.info("Error Sending Email: " + e.getMessage());
+        }
+        return "redirect:/";
+    }
 }
