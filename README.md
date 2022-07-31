@@ -3,6 +3,8 @@
 ## Contains administrator panel for managing users, admins, insitutions, donation categories.
 ## Additionally, the app sends emails to activate new user accounts and when a user forgot his/her password and wants to reset it.
 
+## App available here: https://charityportfolio.herokuapp.com/
+
 ## Tech used:
 ### - Spring Boot:
 #### - Spring Web
