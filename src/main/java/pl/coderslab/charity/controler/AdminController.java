@@ -143,7 +143,7 @@ public class AdminController {
     @GetMapping("/addrandominstitution") //quick add new random institution
     public String addInstitution() {
         Institution institution = new Institution();
-        String iName = "Fundation " + (new Random(System.currentTimeMillis())).nextInt(1000);
+        String iName = "Foundation " + (new Random(System.currentTimeMillis())).nextInt(1000);
         institution.setName(iName);
         institution.setDescription(iName + " opis");
         institutionRepository.save(institution);
@@ -329,8 +329,12 @@ public class AdminController {
     //delete actions
     @GetMapping("/deleteinstitution")
     public String deleteInstitution(Model model,
-                                    @RequestParam String id) {
-        institutionRepository.deleteById(Long.parseLong(id));
+                                    @RequestParam Long id) {
+
+        if(donationRepository.findAll().stream().noneMatch(d->d.getInstitution().getId().equals(id)))
+        {
+            institutionRepository.deleteById(id);
+        }
 
         return "redirect:/admin/institutions";
     }
